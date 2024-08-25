@@ -5,6 +5,7 @@ import Link from '@mui/material/Link';
 import HomeIcon from '@mui/icons-material/Home';
 import { Outlet } from 'react-router-dom';
 import { Box } from '@mui/material';
+import OutlinedCard from './Boards';
 
 
 function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
@@ -34,6 +35,11 @@ export default function IconBreadcrumbs() {
         </Breadcrumbs>
       </Box>
       <Outlet/>
+      <Box>
+        <OutlinedCard
+          sx={{textAlign:"center", padding:"50px"}}
+        />
+      </Box>
     </div>
     )
 }

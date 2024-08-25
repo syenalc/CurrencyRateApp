@@ -1,4 +1,4 @@
-
+import './App.css';
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import React from "react";
 import { useState } from "react";
