@@ -22,16 +22,16 @@ function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
 export default function IconBreadcrumbs() {
   const [items, setItems] = React.useState<Item[]>([]);
 
-  React.useEffect(()=>{
-    const fetchItems=async()=>{
-      const data = await findAll();
-      if(data){
-        setItems(data);
-      }
+  const fetchItems = async () => {
+    const data = await findAll();
+    if (data) {
+      setItems(data);
     }
+  };
 
+  React.useEffect(() => {
     fetchItems();
-  },[]);
+  }, []);
   return (
     <div role="presentation" >
       <Box sx={{display:"flex",justifyContent:"space-between", alignItems:"center", bgcolor:(theme)=>theme.palette.blueColor.main, minHeight:"10vh",padding:"20px"}}>
@@ -65,7 +65,7 @@ export default function IconBreadcrumbs() {
          >
           
       </Link> */}
-      <FormDialog />
+      <FormDialog onNewItemCreated={fetchItems} />
       <Box>
         {items.map((item)=>(
             <OutlinedCard
