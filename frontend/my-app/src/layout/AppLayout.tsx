@@ -5,7 +5,12 @@ import Link from '@mui/material/Link';
 import HomeIcon from '@mui/icons-material/Home';
 import { Outlet } from 'react-router-dom';
 import { Box } from '@mui/material';
-import OutlinedCard from './Boards';
+import OutlinedCard from '../components/Boards';
+import { findAll } from '../utils/api';
+import { SettingsRemoteSharp } from '@mui/icons-material';
+import { Item } from '../utils/items.model';
+import CreateIcon from '@mui/icons-material/Create';
+import FormDialog from '../components/CreateBoards';
 
 
 function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
@@ -15,6 +20,18 @@ function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
 
 
 export default function IconBreadcrumbs() {
+  const [items, setItems] = React.useState<Item[]>([]);
+
+  React.useEffect(()=>{
+    const fetchItems=async()=>{
+      const data = await findAll();
+      if(data){
+        setItems(data);
+      }
+    }
+
+    fetchItems();
+  },[]);
   return (
     <div role="presentation" >
       <Box sx={{display:"flex",justifyContent:"space-between", alignItems:"center", bgcolor:(theme)=>theme.palette.blueColor.main, minHeight:"10vh",padding:"20px"}}>
@@ -35,10 +52,29 @@ export default function IconBreadcrumbs() {
         </Breadcrumbs>
       </Box>
       <Outlet/>
+      <Typography 
+            sx={{textAlign:"center",fontSize:"40px"}} variant="h2" 
+            fontWeight={"fontWeightRegular"}
+        >為替速報掲示板
+      </Typography>
+      {/* <Link
+          underline="hover"
+          sx={{ display: 'flex', alignItems: 'center'}}
+          color="inherit"
+          href="/"
+         >
+          
+      </Link> */}
+      <FormDialog />
       <Box>
-        <OutlinedCard
-          sx={{textAlign:"center", padding:"50px"}}
-        />
+        {items.map((item)=>(
+            <OutlinedCard
+            key={item.id}
+            item={item}
+            sx={{textAlign:"center", padding:"50px"}}
+            
+            />
+        ))}
       </Box>
     </div>
     )

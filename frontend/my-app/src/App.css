@@ -1,10 +1,33 @@
-.css-12dv9jb {
-    padding: 20px 50px !important;
+.css-0{
+    padding: 0px 50px !important;
     width: 80%;
     margin: auto;
 }
-
+.css-135qdec {
+    padding:10px !important;
+}
 
 .css-k008qs {
     justify-content: space-between;
+}
+
+.css-1ghv0ka-MuiTypography-root{
+    padding:20px !important;
+    text-align: center !important;
+}
+/* .css-1vtbjnd-MuiTypography-root-MuiLink-root{
+    padding-bottom:20px !important;
+    justify-content: center !important;
+} */
+.comment-form{
+    text-align: center !important;
+    color:#007bff;
+}
+
+@media (min-width:960px){
+    .css-0{
+        padding: 0px 50px !important;
+        width: 60%;
+        margin: auto;
+    }
 }
