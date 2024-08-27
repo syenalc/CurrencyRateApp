@@ -11,25 +11,15 @@ import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import { Typography } from '@mui/material';
 
-export default function ComposedTextField() {
+export default function LoginForm() {
   return (
     <>
     <Box>
     <Typography 
             sx={{textAlign:"center",fontSize:"40px"}} variant="h2" 
             fontWeight={"fontWeightRegular"}
-        >サインアップ
+        >ログイン
     </Typography>
-    <Box
-      component="form"
-      sx={{
-        '& > :not(style)': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <TextField id="outlined-basic" label="ユーザーネーム" variant="outlined" />
-    </Box>
     <Box
       component="form"
       sx={{
@@ -51,7 +41,7 @@ export default function ComposedTextField() {
       <TextField id="outlined-basic" label="パスワード" variant="outlined" />
     </Box>
     <Button variant="contained" endIcon={<SendIcon />}>
-        サインアップ
+        ログイン
     </Button>
     </Box>
   </>
