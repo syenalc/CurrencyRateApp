@@ -11,7 +11,8 @@ import { SettingsRemoteSharp } from '@mui/icons-material';
 import { Item } from '../utils/items.model';
 import CreateIcon from '@mui/icons-material/Create';
 import FormDialog from '../components/CreateBoards';
-
+import LoginIcon from '@mui/icons-material/Login';
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 
 function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
   event.preventDefault();
@@ -40,6 +41,24 @@ export default function IconBreadcrumbs() {
             fontWeight={"fontWeightRegular"}
         >為替速報</Typography>
         <Breadcrumbs aria-label="breadcrumb" sx={{textAlign:"right"}}>
+          <Link
+          underline="hover"
+          sx={{ display: 'flex', alignItems: 'center' }}
+          color="inherit"
+          href="/signup"
+         >
+          <AppRegistrationIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+          サインアップ
+          </Link>
+          <Link
+          underline="hover"
+          sx={{ display: 'flex', alignItems: 'center' }}
+          color="inherit"
+          href="/login"
+         >
+          <LoginIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+          ログイン
+         </Link>
          <Link
           underline="hover"
           sx={{ display: 'flex', alignItems: 'center' }}
@@ -47,7 +66,7 @@ export default function IconBreadcrumbs() {
           href="/"
          >
           <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-          Home
+          ホーム
          </Link>
         </Breadcrumbs>
       </Box>

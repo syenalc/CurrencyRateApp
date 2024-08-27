@@ -9,6 +9,8 @@ import Report from "./pages/Report";
 import NoMatch from "./pages/NoMatch";
 import IconBreadcrumbs from "./layout/AppLayout";
 import { CurrencyProvider } from "./context/CurrencyContext";
+import Signup from './pages/Signup';
+import Login from './pages/Login';
 const App=()=>{
     // const [linkDisabled,setLinkDisable] =useState(true); // リンクを無効にするためのフラグ
     return(
@@ -26,13 +28,19 @@ const App=()=>{
                         </Route>
                         <Route path="report" element={
                             <Report/>
+                        }> 
+                        </Route>
+                        <Route path="signup" element={
+                            <Signup/>
                         }>
-                            
+                        </Route>
+                        <Route path="login" element={
+                            <Login/>
+                        }>
                         </Route>
                         <Route path="*" element={
                             <NoMatch/>
                         }>
-                            
                         </Route>
                     </Route>
                 </Routes>

@@ -26,8 +26,21 @@
 .css-1t1j96h-MuiPaper-root-MuiDialog-paper{
     width: 100%;
 }
-
-
+form{
+    text-align: center;
+    padding: 10px 0px !important;
+}
+.css-xn6ruc>:not(style) {
+    width: 35ch !important;
+}
+/* 送信ボタン */
+.css-0{
+    text-align: center;
+}
+.css-16nsfq0-MuiButtonBase-root-MuiButton-root{
+    color:#007bff !important;
+    font-size: 1.2em;
+}
 
 @media (min-width:960px){
     .css-0{
