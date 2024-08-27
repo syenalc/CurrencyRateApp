@@ -4,6 +4,10 @@ import CountrySelect from "../components/CountrySelect";
 import RateButton from "../components/RateButton";
 import { useEffect,useContext,useState } from "react";
 import { CurrencyContext } from "../context/CurrencyContext";
+import FormDialog from "../components/CreateBoards";
+import OutlinedCard from "../components/Boards";
+import { Item } from "../utils/items.model";
+import { findAll } from "../utils/api";
 
 // interface HomeProps{
 //     linkDisabled:boolean;
@@ -63,12 +67,41 @@ const Home=()=>{
     //         console.log("Home component unmounted");
     //     };
     // }, []);
-    
+    const [items, setItems] = React.useState<Item[]>([]);
+
+    const fetchItems = async () => {
+    const data = await findAll();
+    if (data) {
+      setItems(data);
+    }
+    };
+
+    React.useEffect(() => {
+        fetchItems();
+    }, []);
     return(
+    <>
         <Box sx={{padding:"50px"}}>
             {/* linkDisabled={linkDisabled} setLinkDisable={setLinkDisable} */}
             <CountrySelect parsedTrigger={parsedTrigger}/>
         </Box>
+        <Typography 
+        sx={{textAlign:"center",fontSize:"40px"}} variant="h2" 
+        fontWeight={"fontWeightRegular"}
+        >為替速報掲示板
+        </Typography>
+        <FormDialog onNewItemCreated={fetchItems} />
+        <Box>
+        {items.map((item)=>(
+            <OutlinedCard
+            key={item.id}
+            item={item}
+            sx={{textAlign:"center", padding:"50px"}}
+            
+            />
+        ))}
+        </Box>
+    </>
     );
 }
 

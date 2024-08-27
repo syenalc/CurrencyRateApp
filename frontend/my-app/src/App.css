@@ -12,7 +12,8 @@
 }
 
 .css-1ghv0ka-MuiTypography-root{
-    padding:20px !important;
+    padding-top:40px!important;
+    padding-bottom: 20px !important;
     text-align: center !important;
 }
 /* .css-1vtbjnd-MuiTypography-root-MuiLink-root{
@@ -30,6 +31,7 @@ form{
     text-align: center;
     padding: 10px 0px !important;
 }
+
 .css-xn6ruc>:not(style) {
     width: 35ch !important;
 }
@@ -40,6 +42,7 @@ form{
 .css-16nsfq0-MuiButtonBase-root-MuiButton-root{
     color:#007bff !important;
     font-size: 1.2em;
+    margin: 30px 0 !important;
 }
 
 @media (min-width:960px){
