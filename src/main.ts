@@ -24,6 +24,7 @@ let cachedServer: Server;
 async function bootstrapServer(): Promise<Server> {
   if (!cachedServer) {
     const app = await NestFactory.create(AppModule);
+    app.enableCors(); // CORSを有効にする
     await app.init();
     cachedServer = awsServerlessExpress.createServer(app.getHttpAdapter().getInstance());
   }
@@ -32,6 +33,16 @@ async function bootstrapServer(): Promise<Server> {
 
 export const handler: Handler = async (event: any, context: Context, callback: Callback) => {
   cachedServer = await bootstrapServer();
-  return awsServerlessExpress.proxy(cachedServer, event, context, 'PROMISE').promise;
+  const response = await awsServerlessExpress.proxy(cachedServer, event, context, 'PROMISE').promise;
+
+  // CORSヘッダーを追加
+  response.headers = {
+    ...response.headers,
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  };
+
+  return response;
 };
 
