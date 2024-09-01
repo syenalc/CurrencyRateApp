@@ -1,12 +1,30 @@
 {
   "compilerOptions": {
-    "noUnusedLocals": false,
-    "noUnusedParameters": false
+    "jsx": "react-jsx",  // React 17以降の新しい JSX トランスフォーマー
+    "target": "ES2020",  // 適切な ECMAScript ターゲットバージョン
+    "module": "ESNext",  // 最新のモジュールシステム
+    "lib": ["ES2020", "DOM"],  // 必要なライブラリ
+    "strict": true,  // 厳格な型チェック
+    "moduleResolution": "node",  // モジュール解決の設定
+    "esModuleInterop": true,  // ES モジュールと CommonJS モジュールの互換性
+    "skipLibCheck": true,  // ライブラリの型チェックをスキップ
+    "noEmit": true,  // コンパイル結果を出力しない
+    "allowSyntheticDefaultImports": true,  // デフォルトインポートを許可
+    "resolveJsonModule": true  // JSON モジュールの解決を許可
   },
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+  "include": ["src"]
 }
+
+// {
+//   "compilerOptions": {
+//     "noUnusedLocals": false,
+//     "noUnusedParameters": false
+//   },
+//   "files": [],
+//   "references": [
+//     { "path": "./tsconfig.app.json" },
+//     { "path": "./tsconfig.node.json" }
+//   ]
+// }
+
 
