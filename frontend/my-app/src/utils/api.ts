@@ -1,11 +1,11 @@
 import { Item } from "./items.model";
 import { User } from "./users.model";
 
-const API_BASE_URL = import.meta.env.REACT_APP_API_URL || 'http://localhost:4000';
+const API_BASE_URL:string = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 
 export async function findAll(){
     try{
-        const res = await fetch('${API_BASE_URL}/items',{
+        const res = await fetch(`${API_BASE_URL}/items`,{
             method:"GET",
         });
         if (!res.ok) {
@@ -20,7 +20,7 @@ export async function findAll(){
 
 export async function create(item:Item){
     try{
-        const res = await fetch('${API_BASE_URL}/items',{
+        const res = await fetch(`${API_BASE_URL}/items`,{
             method:"POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ export async function create(item:Item){
 
 export async function signUp(user:User){
     try{
-        const res = await fetch('${API_BASE_URL}/signup',{
+        const res = await fetch(`${API_BASE_URL}/signup`,{
             method:"POST",
             headers: {
                 'Content-Type': 'application/json',
