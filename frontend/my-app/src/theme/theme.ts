@@ -1,18 +1,10 @@
 import { PaletteColor, PaletteColorOptions, createTheme } from "@mui/material/styles";
-import React from "react";
 import {
-    amber,
     blue,
-    cyan,
-    deepOrange,
     green,
-    lightBlue,
-    lightGreen,
-    pink,
-    purple,
     red
 } from "@mui/material/colors";
-import { BorderTop } from "@mui/icons-material";
+
 
 
 declare module "@mui/material/styles"{

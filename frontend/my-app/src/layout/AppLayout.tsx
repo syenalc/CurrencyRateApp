@@ -5,12 +5,12 @@ import Link from '@mui/material/Link';
 import HomeIcon from '@mui/icons-material/Home';
 import { Outlet } from 'react-router-dom';
 import { Box } from '@mui/material';
-import OutlinedCard from '../components/Boards';
-import { findAll } from '../utils/api';
-import { SettingsRemoteSharp } from '@mui/icons-material';
-import { Item } from '../utils/items.model';
-import CreateIcon from '@mui/icons-material/Create';
-import FormDialog from '../components/CreateBoards';
+// import OutlinedCard from '../components/Boards';
+// import { findAll } from '../utils/api';
+// import { SettingsRemoteSharp } from '@mui/icons-material';
+// import { Item } from '../utils/items.model';
+// import CreateIcon from '@mui/icons-material/Create';
+// import FormDialog from '../components/CreateBoards';
 import LoginIcon from '@mui/icons-material/Login';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 

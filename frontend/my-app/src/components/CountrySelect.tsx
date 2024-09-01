@@ -1,10 +1,9 @@
-import * as React from 'react';
-import { useEffect,useState,useContext,ReactNode , Dispatch, SetStateAction } from 'react';
+import {useContext } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import SyncAltIcon from '@mui/icons-material/SyncAlt';
-import { Button, Fab, ThemeProvider } from '@mui/material';
+import { Fab, ThemeProvider } from '@mui/material';
 import { theme } from '../theme/theme';
 import RateButton from './RateButton';
 import { CurrencyContext } from '../context/CurrencyContext';

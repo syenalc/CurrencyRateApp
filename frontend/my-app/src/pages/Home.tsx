@@ -1,8 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import CountrySelect from "../components/CountrySelect";
-import RateButton from "../components/RateButton";
-import { useEffect,useContext,useState } from "react";
+// import RateButton from "../components/RateButton";
+import { useEffect,useContext } from "react";
 import { CurrencyContext } from "../context/CurrencyContext";
 import FormDialog from "../components/CreateBoards";
 import OutlinedCard from "../components/Boards";
@@ -23,7 +23,7 @@ const Home=()=>{
         throw new Error('CurrencySelect must be used within a CurrencyProvider');
     }
 
-    const { val1, val2,from,to,rate,setFrom,setTo,setRate} = currencyContext;
+    const { setFrom,setTo,setRate} = currencyContext;
     const storedTrigger = localStorage.getItem('trigger');
     const parsedTrigger:boolean = storedTrigger !==null ? JSON.parse(storedTrigger) : false;
 
