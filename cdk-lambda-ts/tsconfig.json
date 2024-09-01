@@ -22,8 +22,13 @@
     "strictPropertyInitialization": false,
     "typeRoots": [
       "./node_modules/@types"
-    ]
+    ],
+    "outDir": "./lib",
+    "rootDir": "./lambda/src"
   },
+  "include": [
+    "lambda/src/**/*.ts"
+  ],
   "exclude": [
     "node_modules",
     "cdk.out"

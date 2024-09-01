@@ -1,4 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
@@ -12,14 +13,16 @@ export class CurrencyRateAppStack extends cdk.Stack {
         const bucket = new s3.Bucket(this, 'CurrencyRateAppBucket', {
             removalPolicy: cdk.RemovalPolicy.DESTROY, // 開発時には削除を許可
             autoDeleteObjects: true,  // バケット削除時にオブジェクトも削除
-        });
+            websiteIndexDocument: 'index.html', // インデックスドキュメントの指定
+            websiteErrorDocument: 'error.html',  // エラードキュメントの指定
+          });
 
-        // DynamoDBテーブルの定義
-        const table = new dynamodb.Table(this, 'CurrencyRateAppTable', {
-            partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
-            billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-            removalPolicy: cdk.RemovalPolicy.DESTROY,
-        });
+        // // DynamoDBテーブルの定義
+        // const table = new dynamodb.Table(this, 'CurrencyRateAppTable', {
+        //     partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
+        //     billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+        //     removalPolicy: cdk.RemovalPolicy.DESTROY,
+        // });
 
         // Nestjs Lambda関数の定義
         const handler = new lambda.Function(this, 'NestJsLambda', {
@@ -33,10 +36,17 @@ export class CurrencyRateAppStack extends cdk.Stack {
         
 
         // API Gatewayの定義
-        const api = new apigateway.LambdaRestApi(this, 'NestJsApi', {
+        const api = new apigateway.LambdaRestApi(this, 'MyApi', {
           handler: handler,
+          proxy: false, // プロキシを無効にする
         });
         
+        // 手動でリソースとメソッドを追加
+        const items = api.root.addResource('items');
+        items.addMethod('GET', new apigateway.LambdaIntegration(handler));
+        items.addMethod('POST', new apigateway.LambdaIntegration(handler));
+        items.addMethod('PUT', new apigateway.LambdaIntegration(handler));
+        items.addMethod('DELETE', new apigateway.LambdaIntegration(handler));
 
         const getCurrenciesIntegration = new apigateway.LambdaIntegration(handler, {
             requestTemplates: { "application/json": '{ "statusCode": "200" }' },
@@ -44,8 +54,8 @@ export class CurrencyRateAppStack extends cdk.Stack {
 
         api.root.addMethod("GET", getCurrenciesIntegration); // GET / エンドポイントの設定
 
-        // 必要なアクセス権を付与
-        table.grantReadWriteData(handler);
+        // // 必要なアクセス権を付与
+        // table.grantReadWriteData(handler);
         bucket.grantReadWrite(handler);
     }
 }
