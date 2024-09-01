@@ -1,7 +1,7 @@
 import './App.css';
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import React from "react";
-import { useState } from "react";
+// import React from "react";
+// import { useState } from "react";
 import {Route,BrowserRouter as Router,  Routes} from 'react-router-dom';
 import { theme } from "./theme/theme";
 import Home from "./pages/Home";
