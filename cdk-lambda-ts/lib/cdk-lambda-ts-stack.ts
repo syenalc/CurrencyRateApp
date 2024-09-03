@@ -27,8 +27,9 @@ export class CurrencyRateAppStack extends cdk.Stack {
         // Nestjs Lambda関数の定義
         const handler = new lambda.Function(this, 'NestJsLambda', {
           runtime: lambda.Runtime.NODEJS_20_X,
-          code: lambda.Code.fromAsset('/home/syenalc/currency-rate-app/backend/my-nest/dist'), // ビルドされたNestJSアプリのディレクトリ,絶対パスでも相対パスでも可
-          handler: 'main.handler', // 上記のハンドラー関数
+          code: lambda.Code.fromAsset('/home/syenalc/currency-rate-app/backend/my-nest/lambda-package.zip'), // ビルドされたNestJSアプリのディレクトリ,絶対パスでも相対パスでも可
+          handler: 'dist/main.handler', // 上記のハンドラー関数
+          timeout: cdk.Duration.seconds(45), 
           environment: {
             NODE_ENV: 'production',
           },
