@@ -44,10 +44,18 @@ export default function OutlinedCard({ sx, item }: OutlinedCardProps) {
               <br />
             </Typography>
           </CardContent>
-          <CardActions>
+          <CardActions sx={{display:"flex",justifyContent: 'space-between'}}>
             <Button size="small" onClick={handleExpandClick}>
               {expanded ? '閉じる' : '続きを読む'}
             </Button>
+            <Box sx={{display:"flex" }}>
+              <Button size="small">
+                編集  
+              </Button>
+              <Button size="small">
+                削除
+              </Button>
+            </Box>
           </CardActions>
         </Card>
       </Box>

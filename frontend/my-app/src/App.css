@@ -63,7 +63,10 @@ form{
     font-size: 1.2em;
     margin: 30px 0 !important;
 } */
-
+ /* ボタンの幅 */
+.css-187v77l {
+    padding-left: 5px !important;
+}
 @media (min-width:960px){
     .css-0{
         padding: 0px 50px !important;
