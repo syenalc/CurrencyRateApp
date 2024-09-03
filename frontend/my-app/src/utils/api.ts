@@ -9,12 +9,14 @@ export async function findAll(){
             method:"GET",
         });
         if (!res.ok) {
-            throw new Error(`エラーが発生しました。ステータス:${res.status}`);
+            const errorBody = await res.text(); // レスポンスボディをテキストで取得
+            throw new Error(`エラーが発生しました。ステータス: ${res.status}, メッセージ: ${errorBody}`);
         }
         const data:Item[]= await res.json();
         return data;
     } catch (e){
         console.log('エラーが発生しました', e);
+        throw e; // 例外を再スローすることで、呼び出し元でもエラーハンドリングが可能になります
     }
 };
 
@@ -28,12 +30,14 @@ export async function create(item:Item){
             body: JSON.stringify(item), // フロントエンドで入力されたデータを送信
         });
         if (!res.ok) {
-            throw new Error(`エラーが発生しました。ステータス:${res.status}`);
+            const errorBody = await res.text(); // レスポンスボディをテキストで取得
+            throw new Error(`エラーが発生しました。ステータス: ${res.status}, メッセージ: ${errorBody}`);
         }
         const data:Item[]= await res.json();
         return data;
     } catch (e){
         console.log('エラーが発生しました', e);
+        throw e;
     }
 };
 
