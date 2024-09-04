@@ -2,11 +2,11 @@ import React, { useState, useEffect, useContext } from "react";
 import { Box, Typography } from "@mui/material";
 import CountrySelect from "../components/CountrySelect";
 import FormDialog from "../components/CreateBoards";
-
+import OutlinedCard from "../components/Boards";
+import UpdateDialog from "../components/UpdateBoards";
 import { CurrencyContext } from "../context/CurrencyContext";
 import { Item } from "../utils/items.model";
 import { findAll } from "../utils/api";
-import Boards from "../components/Boards";
 
 const Home = () => {
   const currencyContext = useContext(CurrencyContext);
@@ -18,6 +18,8 @@ const Home = () => {
   const { setFrom, setTo, setRate } = currencyContext;
 
   const [items, setItems] = useState<Item[]>([]);
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+  const [open, setOpen] = useState(false);  // ダイアログの開閉状態を管理
 
   const fetchItems = async () => {
     const data = await findAll();
@@ -29,6 +31,17 @@ const Home = () => {
   useEffect(() => {
     fetchItems();
   }, []);
+
+  const handleItemUpdated = async () => {
+    await fetchItems();
+    setSelectedItem(null);
+    setOpen(false);  // ダイアログを閉じる
+  };
+
+  const handleEdit = (item: Item) => {
+    setSelectedItem(item);
+    setOpen(true);  // ダイアログを開く
+  };
 
   return (
     <>
@@ -42,12 +55,27 @@ const Home = () => {
       >
         為替速報掲示板
       </Typography>
-      {/* onNewItemCreated に fetchItems 関数を渡す */}
       <FormDialog onNewItemCreated={fetchItems} />
-      <Boards /> 
+      <Box>
+        {items.map((item) => (
+          <OutlinedCard
+            key={item.id}
+            item={item}
+            sx={{ textAlign: "center", padding: "50px" }}
+            onEdit={handleEdit}  // 編集ボタンがクリックされたときに呼び出す
+          />
+        ))}
+      </Box>
+      {selectedItem && (
+        <UpdateDialog
+          item={selectedItem}
+          onItemUpdated={handleItemUpdated}
+          open={open}  // ダイアログの開閉状態を渡す
+          onClose={() => setOpen(false)}  // ダイアログを閉じるための関数を渡す
+        />
+      )}
     </>
   );
 }
 
 export default Home;
-
