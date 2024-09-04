@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { SxProps } from '@mui/system'; 
 import { Item } from '../utils/items.model';
+import UpdateDialog from './UpdateBoards'; 
 
 interface OutlinedCardProps {
   sx?: SxProps; // sx プロパティを追加
@@ -61,5 +62,55 @@ export default function OutlinedCard({ sx, item, onEdit}: OutlinedCardProps) {
         </Card>
       </Box>
     </>
+  );
+}
+
+export function Boards() {
+  const [items, setItems] = React.useState<Item[]>([]);
+  const [selectedItem, setSelectedItem] = React.useState<Item | null>(null);
+  const [open, setOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    const fetchItems = async () => {
+      const data = await findAll(); // APIから全アイテムを取得
+      if (data) {
+        setItems(data);
+      }
+    };
+
+    fetchItems();
+  }, []);
+
+  const handleEdit = (item: Item) => {
+    setSelectedItem(item);
+    setOpen(true); // ダイアログを開く
+  };
+
+  const handleItemUpdated = async () => {
+    const data = await findAll(); // アイテムが更新された後、最新のデータを取得
+    setItems(data);
+    setOpen(false); // ダイアログを閉じる
+    setSelectedItem(null); // 選択をクリアする
+  };
+
+  return (
+    <Box>
+      {items.map((item) => (
+        <OutlinedCard
+          key={item.id}
+          item={item}
+          sx={{ textAlign: "center", padding: "50px" }}
+          onEdit={handleEdit} // 編集ボタンがクリックされたときに呼び出す
+        />
+      ))}
+      {selectedItem && (
+        <UpdateDialog
+          item={selectedItem}
+          onItemUpdated={handleItemUpdated}
+          open={open} // ダイアログの開閉状態を渡す
+          onClose={() => setOpen(false)} // ダイアログを閉じるための関数を渡す
+        />
+      )}
+    </Box>
   );
 }
