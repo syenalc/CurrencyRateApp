@@ -44,7 +44,7 @@ const Home = () => {
       </Typography>
       {/* onNewItemCreated に fetchItems 関数を渡す */}
       <FormDialog onNewItemCreated={fetchItems} />
-      <Boards /> {/* Boards コンポーネントを表示 */}
+      <Boards /> 
     </>
   );
 }
