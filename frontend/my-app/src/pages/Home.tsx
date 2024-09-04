@@ -1,13 +1,15 @@
 import { Box, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import CountrySelect from "../components/CountrySelect";
 // import RateButton from "../components/RateButton";
 import { useEffect,useContext } from "react";
 import { CurrencyContext } from "../context/CurrencyContext";
 import FormDialog from "../components/CreateBoards";
-import OutlinedCard from "../components/Boards";
+
 import { Item } from "../utils/items.model";
 import { findAll } from "../utils/api";
+import UpdateDialog from "../components/UpdateBoards";
+import OutlinedCard from "../components/Boards";
 
 // interface HomeProps{
 //     linkDisabled:boolean;
@@ -68,6 +70,8 @@ const Home=()=>{
     //     };
     // }, []);
     const [items, setItems] = React.useState<Item[]>([]);
+    const [selectedItem, setSelectedItem] = React.useState<Item | null>(null);
+
 
     const fetchItems = async () => {
     const data = await findAll();
@@ -79,6 +83,12 @@ const Home=()=>{
     React.useEffect(() => {
         fetchItems();
     }, []);
+
+    const handleItemUpdated = async () => {
+        await fetchItems();
+        setSelectedItem(null); // ダイアログを閉じる
+      };
+
     return(
     <>
         <Box sx={{padding:"50px"}}>
@@ -97,10 +107,16 @@ const Home=()=>{
             key={item.id}
             item={item}
             sx={{textAlign:"center", padding:"50px"}}
-            
+            onEdit={setSelectedItem} // 編集ボタンのクリックでアイテムを設定
             />
         ))}
         </Box>
+        {selectedItem && (
+        <UpdateDialog
+          item={selectedItem}
+          onItemUpdated={handleItemUpdated}
+            />
+        )}
     </>
     );
 }

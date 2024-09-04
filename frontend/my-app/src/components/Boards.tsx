@@ -11,9 +11,10 @@ import { Item } from '../utils/items.model';
 interface OutlinedCardProps {
   sx?: SxProps; // sx プロパティを追加
   item: Item;
+  onEdit: (item: Item) => void; // 編集ボタンのクリックハンドラーを追加
 }
 
-export default function OutlinedCard({ sx, item }: OutlinedCardProps) {
+export default function OutlinedCard({ sx, item, onEdit}: OutlinedCardProps) {
   const [expanded, setExpanded] = React.useState(false); // 状態を管理
 
   const handleExpandClick = () => {
@@ -49,7 +50,7 @@ export default function OutlinedCard({ sx, item }: OutlinedCardProps) {
               {expanded ? '閉じる' : '続きを読む'}
             </Button>
             <Box sx={{display:"flex" }}>
-              <Button size="small">
+              <Button size="small" onClick={() => onEdit(item)}>
                 編集  
               </Button>
               <Button size="small">
