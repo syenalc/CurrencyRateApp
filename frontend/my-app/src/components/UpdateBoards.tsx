@@ -16,7 +16,8 @@ interface FormDialogProp {
 
 export default function UpdateDialog({ item, onItemUpdated, open, onClose }: FormDialogProp) {
   const [formData, setFormData] = useState({ description: item.description });
-
+  console.log(formData);
+  
   useEffect(() => {
     setFormData({ description: item.description });
   }, [item]);
@@ -26,6 +27,7 @@ export default function UpdateDialog({ item, onItemUpdated, open, onClose }: For
       ...formData,
       [e.target.name]: e.target.value,
     });
+    
   };
 
   const handleSubmit = async () => {
@@ -33,7 +35,7 @@ export default function UpdateDialog({ item, onItemUpdated, open, onClose }: For
       ...item,
       description: formData.description,
     };
-
+    console.log(updatedItem);
     const result = await update(updatedItem);
     console.log('アイテムが更新されました:', result);
 

@@ -12,9 +12,10 @@ interface OutlinedCardProps {
   sx?: SxProps; // sx プロパティを追加
   item: Item;
   onEdit: (item: Item) => void; // 編集ボタンのクリックハンドラーを追加
+  onDelete: (itemId: string) => void
 }
 
-export default function OutlinedCard({ sx, item, onEdit}: OutlinedCardProps) {
+export default function OutlinedCard({ sx, item, onEdit, onDelete}: OutlinedCardProps) {
   const [expanded, setExpanded] = React.useState(false); // 状態を管理
 
   const handleExpandClick = () => {
@@ -53,7 +54,7 @@ export default function OutlinedCard({ sx, item, onEdit}: OutlinedCardProps) {
               <Button size="small" onClick={() => onEdit(item)}>
                 編集  
               </Button>
-              <Button size="small">
+              <Button size="small" onClick={()=> onDelete(item.id)}>
                 削除
               </Button>
             </Box>

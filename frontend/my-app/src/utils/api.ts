@@ -34,6 +34,7 @@ export async function create(item:Item){
             throw new Error(`エラーが発生しました。ステータス: ${res.status}, メッセージ: ${errorBody}`);
         }
         const data:Item[]= await res.json();
+        console.log(item.id);
         return data;
     } catch (e){
         console.log('エラーが発生しました', e);
@@ -51,6 +52,7 @@ export async function update(item:Item){
             body: JSON.stringify(item), // フロントエンドで入力されたデータを送信
         });
         if (!res.ok) {
+            console.log(item.id);
             const errorBody = await res.text(); // レスポンスボディをテキストで取得
             throw new Error(`エラーが発生しました。ステータス: ${res.status}, メッセージ: ${errorBody}`);
         }
@@ -62,7 +64,7 @@ export async function update(item:Item){
     }
 };
 
-export async function deleteItem(itemId:string){
+export async function deleteItemApi(itemId:string){
     try{
         const res = await fetch(`${API_BASE_URL}/items/${itemId}`,{
             method:"DELETE",
