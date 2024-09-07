@@ -26,6 +26,7 @@ export default function FormDialog({onNewItemCreated}:FormDialogProp) {
   };
 
   const handleClose = () => {
+    setFormData({description:''});
     setOpen(false);
   };
 
