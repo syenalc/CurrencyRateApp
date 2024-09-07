@@ -36,18 +36,26 @@ export class CurrencyRateAppStack extends cdk.Stack {
         });
         
 
+        // // API Gatewayの定義
+        // const api = new apigateway.LambdaRestApi(this, 'MyApi', {
+        //   handler: handler,
+        //   proxy: false, // プロキシを無効にする
+        // });
         // API Gatewayの定義
-        const api = new apigateway.LambdaRestApi(this, 'MyApi', {
-          handler: handler,
-          proxy: false, // プロキシを無効にする
+        const api = new apigateway.RestApi(this, 'MyApi', {
+          restApiName: 'Currency Rate API',
+          defaultCorsPreflightOptions: {
+            allowOrigins: apigateway.Cors.ALL_ORIGINS, // CORSを有効化
+            allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // 必要なメソッドを許可
+          },
         });
-        
+
         // 手動でリソースとメソッドを追加
-        const items = api.root.addResource('items');
-        items.addMethod('GET', new apigateway.LambdaIntegration(handler));
-        items.addMethod('POST', new apigateway.LambdaIntegration(handler));
-        items.addMethod('PUT', new apigateway.LambdaIntegration(handler));
-        items.addMethod('DELETE', new apigateway.LambdaIntegration(handler));
+        // const items = api.root.addResource('items');
+        // items.addMethod('GET', new apigateway.LambdaIntegration(handler));
+        // items.addMethod('POST', new apigateway.LambdaIntegration(handler));
+        // items.addMethod('PUT', new apigateway.LambdaIntegration(handler));
+        // items.addMethod('DELETE', new apigateway.LambdaIntegration(handler));
 
         const getCurrenciesIntegration = new apigateway.LambdaIntegration(handler, {
             requestTemplates: { "application/json": '{ "statusCode": "200" }' },
@@ -55,6 +63,16 @@ export class CurrencyRateAppStack extends cdk.Stack {
 
         api.root.addMethod("GET", getCurrenciesIntegration); // GET / エンドポイントの設定
 
+        // /items リソースの定義
+        const items = api.root.addResource('items');
+        items.addMethod('GET', new apigateway.LambdaIntegration(handler));
+        items.addMethod('POST', new apigateway.LambdaIntegration(handler));
+
+        // /items/{id} リソースの定義
+        const item = items.addResource('{id}'); 
+        item.addMethod('PUT', new apigateway.LambdaIntegration(handler));
+        item.addMethod('DELETE', new apigateway.LambdaIntegration(handler));
+        
         // // 必要なアクセス権を付与
         // table.grantReadWriteData(handler);
         bucket.grantReadWrite(handler);
