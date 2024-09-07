@@ -32,10 +32,25 @@ export class ItemsController {
         return this.itemsService.create(item);
     }
 
+    // @Put(':id')
+    // update(@Param('id')id:string){
+    //     return this.itemsService.update(id);
+    // }
+    // @Put(':id')
+    // update(
+    //     @Param('id') id: string,
+    //     @Body() updatedItem: Partial<Item>,
+    // ): Item {
+    //     return this.itemsService.update(id, updatedItem);
+    // }
     @Put(':id')
-    update(@Param('id')id:string){
-        return this.itemsService.update(id);
+    update(
+        @Param('id') id: string,
+        @Body('description') description: string, // リクエストボディから description を取得
+    ) {
+        return this.itemsService.update(id, description);
     }
+
 
     @Delete(':id')
     delete(@Param('id')id:string){
