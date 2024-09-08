@@ -40,6 +40,7 @@ export default function RateButton() {
     const amount=1;
     // const [trigger, setTrigger] = useState(parsedTrigger);
 
+    //getCurrencyRateのsetFrom, setToが完了したとき（from, toが変更されたとき）に行いたい。
     useEffect(() => {
         if (from && to) {
             const fetchData = async () => {
@@ -63,16 +64,18 @@ export default function RateButton() {
             };
             fetchData();
         }
-    }, [from, to, amount]);
+    }, [from, to]);
 
     const getCurrencyRate = () => {     
         if (leftValue && rightValue) {
+
             setFrom(leftValue.currency);
             setTo(rightValue.currency);
             
             // triggerの値をトグル（true <-> false）させる
             // setTrigger((prev) => !prev);
             console.log("通貨換算リクエストを送信")
+            
         } else {
             console.log('leftValueまたはrightValueがnullです');
         }    
@@ -82,9 +85,9 @@ export default function RateButton() {
 
     const dataStorage=()=>{
         //from,to,rateをストレージに保存する
-        if (from) localStorage.setItem('from', JSON.stringify(from));
-        if (to) localStorage.setItem('to', JSON.stringify(to));
-        if (rate) localStorage.setItem('rate', JSON.stringify(rate));
+        // if (from) localStorage.setItem('from', JSON.stringify(from));
+        // if (to) localStorage.setItem('to', JSON.stringify(to));
+        // if (rate) localStorage.setItem('rate', JSON.stringify(rate));
 
         //今日の日付を取得
         const today = new Date();
@@ -119,11 +122,10 @@ export default function RateButton() {
         const formattedThreeWeekAgo = formatdate(threeWeekAgo);
         const formattedFourWeekAgo = formatdate(fourWeekAgo);
 
-
-        const fetchData1wago = async () => {
+        const fetchDataPast = async (somepoint:string,rateSetter:React.Dispatch<React.SetStateAction<number | null>>) => {
             const endpoint = import.meta.env.VITE_API_END;
             const keys = import.meta.env.VITE_API_KEY;
-            const url = `https://api.exchangerate.host/${endpoint}?access_key=${keys}&from=${from}&to=${to}&amount=${amount}&date=${formattedOneWeekAgo}`;
+            const url = `https://api.exchangerate.host/${endpoint}?access_key=${keys}&from=${from}&to=${to}&amount=${amount}&date=${somepoint}`;
 
             try {
                 const res = await fetch(url, {
@@ -132,89 +134,24 @@ export default function RateButton() {
                 if (!res.ok) {
                     throw new Error(`エラーが発生しました。ステータス:${res.status}`);
                 }
+
                 const data1: CurrencyData = await res.json();
-                setRate1Week(data1.result);
+                rateSetter(data1.result);
                 console.log(data1);
 
             } catch (e) {
                 console.log('エラーが発生しました', e);
             }
         };
-        fetchData1wago();
-
-        const fetchData2wago = async () => {
-            const endpoint = import.meta.env.VITE_API_END;
-            const keys = import.meta.env.VITE_API_KEY;
-            const url = `https://api.exchangerate.host/${endpoint}?access_key=${keys}&from=${from}&to=${to}&amount=${amount}&date=${formattedTwoWeekAgo}`;
-
-            try {
-                const res = await fetch(url, {
-                    method: "GET",
-                });
-                if (!res.ok) {
-                    throw new Error(`エラーが発生しました。ステータス:${res.status}`);
-                }
-                const data2: CurrencyData = await res.json();
-                setRate2Week(data2.result);
-                console.log(data2);
-                
-                // setLinkDisable(false);
-            } catch (e) {
-                console.log('エラーが発生しました', e);
-            }
+        const fetchMonthData = async () => {
+            await fetchDataPast(formattedOneWeekAgo, setRate1Week);
+            await fetchDataPast(formattedTwoWeekAgo, setRate2Week);
+            await fetchDataPast(formattedThreeWeekAgo, setRate3Week);
+            await fetchDataPast(formattedFourWeekAgo, setRate4Week);
         };
-        fetchData2wago();
-
-        const fetchData3wago = async () => {
-            const endpoint = import.meta.env.VITE_API_END;
-            const keys = import.meta.env.VITE_API_KEY;
-            const url = `https://api.exchangerate.host/${endpoint}?access_key=${keys}&from=${from}&to=${to}&amount=${amount}&date=${formattedThreeWeekAgo}`;
-
-            try {
-                const res = await fetch(url, {
-                    method: "GET",
-                });
-                if (!res.ok) {
-                    throw new Error(`エラーが発生しました。ステータス:${res.status}`);
-                }
-                const data3: CurrencyData = await res.json();
-                setRate3Week(data3.result);
-                console.log(data3);
-                
-
-            } catch (e) {
-                console.log('エラーが発生しました', e);
-            }
-        };
-        fetchData3wago();
-
-        const fetchData4wago = async () => {
-            const endpoint = import.meta.env.VITE_API_END;
-            const keys = import.meta.env.VITE_API_KEY;
-            const url = `https://api.exchangerate.host/${endpoint}?access_key=${keys}&from=${from}&to=${to}&amount=${amount}&date=${formattedFourWeekAgo}`;
-
-            try {
-                const res = await fetch(url, {
-                    method: "GET",
-                });
-                if (!res.ok) {
-                    throw new Error(`エラーが発生しました。ステータス:${res.status}`);
-                }
-                const data4: CurrencyData = await res.json();
-                setRate4Week(data4.result);;
-                console.log(data4);
-                
-
-            } catch (e) {
-                console.log('エラーが発生しました', e);
-            }
-        };
-
-        fetchData4wago();
-
         
+        fetchMonthData();
 
-        
     }
 
     

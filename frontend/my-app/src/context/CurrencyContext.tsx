@@ -45,6 +45,7 @@ export const CurrencyContext=createContext<CurrencyContextProps | undefined>(und
 
 export const CurrencyProvider:React.FC<{children:ReactNode}>=({children})=>{
     
+    //leftValue, rightValueはオブジェクト, from, toはオブジェクトのcurrency(EURなど)
     const [leftValue,setLeftValue]=useState<any>(null);
     const [rightValue,setRightValue]=useState<any>(null);
     const [rate, setRate] = useState<number | null>(null);
