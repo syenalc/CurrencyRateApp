@@ -21,10 +21,11 @@ interface CurrencyData {
     result: number;
 }
 
-interface RateButtonProps{
-    parsedTrigger:boolean;
-}
-export default function RateButton({parsedTrigger}:RateButtonProps) {
+// interface RateButtonProps{
+//     parsedTrigger:boolean;
+// }
+// {parsedTrigger}:RateButtonProps
+export default function RateButton() {
     const currencyContext2 = useContext(CurrencyContext);
 
     if (!currencyContext2) {
@@ -37,7 +38,7 @@ export default function RateButton({parsedTrigger}:RateButtonProps) {
 
     
     const amount=1;
-    const [trigger, setTrigger] = useState(parsedTrigger);
+    // const [trigger, setTrigger] = useState(parsedTrigger);
 
     useEffect(() => {
         if (from && to) {
@@ -70,7 +71,7 @@ export default function RateButton({parsedTrigger}:RateButtonProps) {
             setTo(rightValue.currency);
             
             // triggerの値をトグル（true <-> false）させる
-            setTrigger((prev) => !prev);
+            // setTrigger((prev) => !prev);
             console.log("通貨換算リクエストを送信")
         } else {
             console.log('leftValueまたはrightValueがnullです');

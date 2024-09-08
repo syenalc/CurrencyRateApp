@@ -58,11 +58,11 @@ const Home = () => {
     setSelectedDeleteItem(itemId);
     setOpenDelete(true);  // ダイアログを開く
   };
-
+  // parsedTrigger={JSON.parse(localStorage.getItem('trigger') || 'false')}
   return (
     <>
       <Box sx={{ padding: "50px" }}>
-        <CountrySelect parsedTrigger={JSON.parse(localStorage.getItem('trigger') || 'false')} />
+        <CountrySelect />
       </Box>
       <Typography
         sx={{ textAlign: "center", fontSize: "40px" }}

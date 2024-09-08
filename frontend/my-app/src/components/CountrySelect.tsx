@@ -15,9 +15,9 @@ interface CountryType {
   currency: string;
 }
 
-interface CountrySelectProps{
-  parsedTrigger:boolean
-}
+// interface CountrySelectProps{
+//   parsedTrigger:boolean
+// }
 
 
 
@@ -110,8 +110,8 @@ const countries: readonly CountryType[] = [
     currency: 'ZAR'
   },
 ];
-
-export default function CountrySelect({parsedTrigger}:CountrySelectProps) {
+// {parsedTrigger}:CountrySelectProps
+export default function CountrySelect() {
   const currencyContext = useContext(CurrencyContext);
 
   if (!currencyContext) {
@@ -232,7 +232,7 @@ export default function CountrySelect({parsedTrigger}:CountrySelectProps) {
         />
       </Box>
       <RateButton 
-        parsedTrigger={parsedTrigger}
+        // parsedTrigger={parsedTrigger}
       />
      </ThemeProvider>
     </>
