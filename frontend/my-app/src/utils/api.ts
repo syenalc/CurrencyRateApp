@@ -16,7 +16,7 @@ export async function findAll(){
         return data;
     } catch (e){
         console.log('エラーが発生しました', e);
-        throw e; // 例外を再スローすることで、呼び出し元でもエラーハンドリングが可能になります
+        throw e; // 例外を再スローすることで、呼び出し元でエラーハンドリングができる
     }
 };
 
@@ -82,21 +82,3 @@ export async function deleteItemApi(itemId:string){
         throw e;
     }
 };
-// export async function signUp(user:User){
-//     try{
-//         const res = await fetch(`${API_BASE_URL}/signup`,{
-//             method:"POST",
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify(user), // フロントエンドで入力されたデータを送信
-//         });
-//         if (!res.ok) {
-//             throw new Error(`エラーが発生しました。ステータス:${res.status}`);
-//         }
-//         const data:User[]= await res.json();
-//         return data;
-//     } catch (e){
-//         console.log('エラーが発生しました', e);
-//     }
-// };

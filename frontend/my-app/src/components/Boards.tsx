@@ -19,7 +19,7 @@ export default function OutlinedCard({ sx, item, onEdit, onDelete}: OutlinedCard
   const [expanded, setExpanded] = React.useState(false); // 状態を管理
 
   const handleExpandClick = () => {
-    setExpanded(!expanded); // 状態を切り替える
+    setExpanded(!expanded); // コメント欄の拡大・縮小の状態を切り替える
   };
 
   return (
@@ -28,7 +28,7 @@ export default function OutlinedCard({ sx, item, onEdit, onDelete}: OutlinedCard
         <Card variant="outlined">
           <CardContent
             sx={{
-              height: expanded ? 'auto' : 100, // デフォルトの高さを制限
+              height: expanded ? 'auto' : 100, // デフォルトの高さを100に制限
               overflow: 'hidden', // デフォルトではオーバーフローを隠す
             }}
           >

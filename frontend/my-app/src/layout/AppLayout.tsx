@@ -5,19 +5,9 @@ import Link from '@mui/material/Link';
 import HomeIcon from '@mui/icons-material/Home';
 import { Outlet } from 'react-router-dom';
 import { Box } from '@mui/material';
-// import OutlinedCard from '../components/Boards';
-// import { findAll } from '../utils/api';
-// import { SettingsRemoteSharp } from '@mui/icons-material';
-// import { Item } from '../utils/items.model';
-// import CreateIcon from '@mui/icons-material/Create';
-// import FormDialog from '../components/CreateBoards';
 import LoginIcon from '@mui/icons-material/Login';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 
-function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-  event.preventDefault();
-  console.info('You clicked a breadcrumb.');
-}
 
 
 export default function IconBreadcrumbs() {
@@ -60,16 +50,6 @@ export default function IconBreadcrumbs() {
         </Breadcrumbs>
       </Box>
       <Outlet/>
-      
-      {/* <Link
-          underline="hover"
-          sx={{ display: 'flex', alignItems: 'center'}}
-          color="inherit"
-          href="/"
-         >
-          
-      </Link> */}
-
     </div>
     )
 }

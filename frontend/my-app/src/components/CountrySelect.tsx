@@ -24,8 +24,6 @@ interface CountryType {
 // }
 
 interface CountrySelectProps{
-  // linkDisabled:boolean;
-  // setLinkDisable:React.Dispatch<React.SetStateAction<boolean>>;
   parsedTrigger:boolean
 }
 // interface CurrencyContextProps {

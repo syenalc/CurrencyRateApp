@@ -3,13 +3,9 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-// import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import CreateIcon from '@mui/icons-material/Create';
 import { v4 as uuidv4 } from 'uuid'; 
-// import uuidv4 from 'uuid/v4';
-
-
 import { Item } from '../utils/items.model';
 import { create } from '../utils/api';
 
@@ -57,7 +53,6 @@ export default function FormDialog({onNewItemCreated}:FormDialogProp) {
       <Button variant="contained" onClick={handleClickOpen}>
       <CreateIcon sx={{ mr: 0.5 }} fontSize="inherit" />コメントを書く
       </Button>
-      {/* <form action="/create" method="post"> */}
       <Dialog open={open} onClose={handleClose}>
         {/* <DialogTitle>コメント</DialogTitle> */}
         <DialogContent>
@@ -85,7 +80,6 @@ export default function FormDialog({onNewItemCreated}:FormDialogProp) {
           <Button onClick={handleSubmit}>投稿</Button>
         </DialogActions>
       </Dialog>
-      {/* </form> */}
     </div>
   );
 }

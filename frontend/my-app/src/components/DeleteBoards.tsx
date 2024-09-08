@@ -15,15 +15,6 @@ interface AlertDialogProp {
 }
 
 export default function AlertDialog({deleteItemId, onItemAfterDelete, openDelete, onClose}: AlertDialogProp) {
-//   const [open, setOpen] = React.useState(false);
-
-//   const handleClickOpen = () => {
-//     setOpen(true);
-//   };
-
-//   const handleClose = () => {
-//     setOpen(false);
-//   };
    const handleDelete = async () => {
     try {
         await deleteItemApi(deleteItemId);
@@ -37,9 +28,6 @@ export default function AlertDialog({deleteItemId, onItemAfterDelete, openDelete
 
   return (
     <React.Fragment>
-      {/* <Button variant="outlined" onClick={handleClickOpen}>
-        Open alert dialog
-      </Button> */}
       <Dialog
         open={openDelete}
         onClose={onClose}
