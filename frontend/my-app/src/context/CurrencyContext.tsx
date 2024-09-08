@@ -6,18 +6,18 @@ interface CountryType {
     currency: string;
   }
   
-interface CurrencyData {
-    success: boolean;
-    query: {
-        from: string;
-        to: string;
-        amount: number;
-    };
-    info: {
-        rate: number;
-    };
-    result: number;
-}
+// interface CurrencyData {
+//     success: boolean;
+//     query: {
+//         from: string;
+//         to: string;
+//         amount: number;
+//     };
+//     info: {
+//         rate: number;
+//     };
+//     result: number;
+// }
 interface CurrencyContextProps {
     val1: CountryType | null;
     val2: CountryType | null;

@@ -13,46 +13,31 @@ interface CountryType {
   code: string;
   label: string;
   currency: string;
-  // suggested?: boolean;
 }
-
-// interface CountrySelectProps {
-//   val1: CountryType | null;
-//   val2: CountryType | null;
-//   setVal1: React.Dispatch<React.SetStateAction<CountryType | null>>;
-//   setVal2: React.Dispatch<React.SetStateAction<CountryType | null>>;
-// }
 
 interface CountrySelectProps{
   parsedTrigger:boolean
 }
-// interface CurrencyContextProps {
-//   val1: CountryType | null;
-//   val2: CountryType | null;
-//   setVal1: Dispatch<SetStateAction<CountryType | null>>;
-//   setVal2: Dispatch<SetStateAction<CountryType | null>>;
-// }
-// From https://bitbucket.org/atlassian/atlaskit-mk-2/raw/4ad0e56649c3e6c973e226b7efaeb28cb240ccb0/packages/core/select/../data/countries.js
+
+
+
 const countries: readonly CountryType[] = [
   {
     code: 'AE',
     label: 'UAEディルハム',
     currency: 'AED',
-    // phone: '971',
   },
   { code: 'AR', label: 'アルゼンチンペソ' ,currency: 'ARS'},
   {
     code: 'AU',
     label: 'オーストラリアドル',
     currency: 'AUD',
-    // phone: '61',
   },
   { code: 'BR', label: 'レアル',currency: 'BRL', },
   {
     code: 'CA',
     label: 'カナダドル',
     currency: 'CAD',
-    // phone: '1',
   },
   { code: 'CN', label: '元', currency: 'CNY' },
   { code: 'CO', label: 'コロンビアペソ', currency: 'COP' },
@@ -60,7 +45,6 @@ const countries: readonly CountryType[] = [
     code: 'DE',
     label: 'ユーロ',
     currency: 'EUR'
-    // phone: '49',
   },
   { code: 'GB', label: 'ポンド',currency: 'GBP', },
   { code: 'ID', label: 'ルピア', currency: 'IDR', },
@@ -69,8 +53,6 @@ const countries: readonly CountryType[] = [
     code: 'JP',
     label: '円',
     currency: 'JPY'
-    // phone: '81',
-    // suggested: true,
   },
   { code: 'KR', label: 'ウォン',currency: 'KRW'},
   { code: 'MX', label: 'メキシコペソ', currency: 'MXN'},
@@ -86,7 +68,7 @@ const countries: readonly CountryType[] = [
   { code: 'VN', label: 'ドン',currency: 'VND'},
   { code: 'ZA', label: 'ランド',currency: 'ZAR'},
 ];
-// {linkDisabled,setLinkDisable}:CountrySelectProps
+
 export default function CountrySelect({parsedTrigger}:CountrySelectProps) {
   const currencyContext = useContext(CurrencyContext);
 
@@ -95,8 +77,7 @@ export default function CountrySelect({parsedTrigger}:CountrySelectProps) {
   }
 
   const { val1, val2, setVal1, setVal2 } = currencyContext;
-  // const [val1,setVal1]=useState<CountryType | null>(null);
-  // const [val2,setVal2]=useState<CountryType | null>(null);
+
 
   const onChangeleft=(event:any,newValue:CountryType | null)=> setVal1(newValue);
   const onChangeright=(event:any,newValue:CountryType | null)=> setVal2(newValue);
@@ -114,11 +95,6 @@ export default function CountrySelect({parsedTrigger}:CountrySelectProps) {
     }
     
   }
-  //下記はなくても動く
-  // useEffect(() => {
-  //   console.log("val1:", val1);
-  //   console.log("val2:", val2);
-  // }, [val1, val2]);
   
   
   return (
@@ -159,13 +135,11 @@ export default function CountrySelect({parsedTrigger}:CountrySelectProps) {
               label="換算元通貨"
               inputProps={{
                 ...params.inputProps,
-                autoComplete: 'new-password', // disable autocomplete and autofill
-                placeholder: '入力してください', // Add the placeholder here
+                autoComplete: 'new-password', 
+                placeholder: '入力してください', 
               }}
               sx={{ '& .MuiInputBase-input': { width: 100 } }}
               value={val1 ? val1.label : ''} // Display the label of the selected option
-              // value={val1}
-              // onChange={(e)=>setVal1(e.target.value)}
            />
            )}
           />
@@ -178,7 +152,7 @@ export default function CountrySelect({parsedTrigger}:CountrySelectProps) {
           options={countries}
           autoHighlight
           getOptionLabel={(option) => option.label}
-          onChange={onChangeright} // Update val2 on option select
+          onChange={onChangeright} // Update val2 
           value={val2}
           renderOption={(props, option) => {
            const { key, ...optionProps } = props;
@@ -208,32 +182,16 @@ export default function CountrySelect({parsedTrigger}:CountrySelectProps) {
               label="換算先通貨"
               inputProps={{
                 ...params.inputProps,
-                // autoComplete: 'new-password', // disable autocomplete and autofill
                 placeholder: '入力してください', // Add the placeholder here
               }}
               value={val2 ? val2.label : ''} // Display the label of the selected option
-              // value={val2}
-              // onChange={(e)=>setVal2(e.target.value)}
             />
         )}
         />
       </Box>
       <RateButton 
         parsedTrigger={parsedTrigger}
-        // linkDisabled={linkDisabled}
-        // setLinkDisable={setLinkDisable}
       />
-      {/* <button style={{borderRadius:"5px",backgroundColor:"blue", border:"none", margin:"auto", display:"flex", padding:"10px 40px",fontSize:"1.4em"}}>換算する</button> */}
-      {/* <Button 
-        variant="contained" 
-        sx={{ 
-          backgroundColor: theme.palette.blueColor.main, 
-          color: 'white', 
-          '&:hover': { backgroundColor: theme.palette.blueColor.dark } 
-        }}
-      >
-        Contained
-      </Button> */}
      </ThemeProvider>
     </>
     

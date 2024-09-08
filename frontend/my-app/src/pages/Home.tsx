@@ -16,8 +16,7 @@ const Home = () => {
     throw new Error('CurrencySelect must be used within a CurrencyProvider');
   }
 
-  const { setFrom, setTo, setRate } = currencyContext;
-
+  
   const [items, setItems] = useState<Item[]>([]);
   const [selectedItem, setSelectedItem] = useState<Item | null>(null); //updateダイアログが選択された状態
   const [open, setOpen] = useState(false);  // updateダイアログの開閉状態を管理
