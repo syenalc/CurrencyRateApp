@@ -10,9 +10,6 @@ export class ItemsController {
     async findAll(): Promise<Item[]> {
         return await this.itemsService.findAll();
     }
-    // findAll():Item[]{
-    //     return this.itemsService.findAll();
-    // }
 
     // @Get(':id')
     // findById(@Param('id')id:string):Item{
