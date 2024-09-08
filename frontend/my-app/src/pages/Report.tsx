@@ -1,17 +1,17 @@
-import  { useContext } from "react";
+import { useContext } from "react";
 import { LineChart } from '@mui/x-charts/LineChart';
 import { Box, Typography } from "@mui/material";
 import { CurrencyContext } from "../context/CurrencyContext";
 
 
 const Report=()=>{
-    const currencyContext2 = useContext(CurrencyContext);
+    const currencyContextReport = useContext(CurrencyContext);
 
-    if (!currencyContext2) {
+    if (!currencyContextReport) {
         throw new Error('CurrencySelect must be used within a CurrencyProvider');
     }
 
-    const {rate,rate1,rate2,rate3,rate4} = currencyContext2;
+    const {rate,rate1week,rate2week,rate3week,rate4week} = currencyContextReport;
     
     const timeData:string[] = ["4週間前","3週間前","2週間前","1週間前","今日"]
 
@@ -27,7 +27,7 @@ const Report=()=>{
             <Typography><p style={{textAlign:"center", fontSize:"24px",marginTop:"40px"}}>過去1カ月間の推移</p></Typography>
             <LineChart
                 series={[
-                { curve: "linear", data: [rate4, rate3, rate2, rate1, rate] },
+                { curve: "linear", data: [rate4week, rate3week, rate2week, rate1week, rate] },
                 ]}
                 xAxis={[
                     {

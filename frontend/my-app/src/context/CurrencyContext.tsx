@@ -19,24 +19,24 @@ interface CountryType {
 //     result: number;
 // }
 interface CurrencyContextProps {
-    val1: CountryType | null;
-    val2: CountryType | null;
-    setVal1: Dispatch<SetStateAction<CountryType | null>>;
-    setVal2: Dispatch<SetStateAction<CountryType | null>>;
+    leftValue: CountryType | null;
+    rightValue: CountryType | null;
+    setLeftValue: Dispatch<SetStateAction<CountryType | null>>;
+    setRightValue: Dispatch<SetStateAction<CountryType | null>>;
     from: string |null ;
     to: string |null ;
     rate:number |null;
     setFrom: Dispatch<SetStateAction<string | null>> ;
     setTo: Dispatch<SetStateAction<string | null>> ;
     setRate: Dispatch<SetStateAction<number | null>> ;
-    rate1:number |null;
-    rate2:number |null;
-    rate3:number |null;
-    rate4:number |null;
-    setRate1: Dispatch<SetStateAction<number | null>> ;
-    setRate2: Dispatch<SetStateAction<number | null>> ;
-    setRate3: Dispatch<SetStateAction<number | null>> ;
-    setRate4: Dispatch<SetStateAction<number | null>> ;
+    rate1week:number |null;
+    rate2week:number |null;
+    rate3week:number |null;
+    rate4week:number |null;
+    setRate1Week: Dispatch<SetStateAction<number | null>> ;
+    setRate2Week: Dispatch<SetStateAction<number | null>> ;
+    setRate3Week: Dispatch<SetStateAction<number | null>> ;
+    setRate4Week: Dispatch<SetStateAction<number | null>> ;
 }
 
 
@@ -45,20 +45,39 @@ export const CurrencyContext=createContext<CurrencyContextProps | undefined>(und
 
 export const CurrencyProvider:React.FC<{children:ReactNode}>=({children})=>{
     
-    const [val1,setVal1]=useState<any>(null);
-    const [val2,setVal2]=useState<any>(null);
+    const [leftValue,setLeftValue]=useState<any>(null);
+    const [rightValue,setRightValue]=useState<any>(null);
     const [rate, setRate] = useState<number | null>(null);
     const [from, setFrom] = useState<string | null>(null);
     const [to, setTo] = useState<string | null>(null);
 
-    const [rate1, setRate1] = useState<number | null>(null);
-    const [rate2, setRate2] = useState<number | null>(null);
-    const [rate3, setRate3] = useState<number | null>(null);
-    const [rate4, setRate4] = useState<number | null>(null);
+    const [rate1week, setRate1Week] = useState<number | null>(null);
+    const [rate2week, setRate2Week] = useState<number | null>(null);
+    const [rate3week, setRate3Week] = useState<number | null>(null);
+    const [rate4week, setRate4Week] = useState<number | null>(null);
 
     
     return(
-        <CurrencyContext.Provider value={{val1,val2,setVal1,setVal2,rate,from,to,setRate,setFrom,setTo,rate1,rate2,rate3,rate4,setRate1,setRate2,setRate3,setRate4}}>
+        <CurrencyContext.Provider value={{
+            leftValue,
+            rightValue,
+            setLeftValue,
+            setRightValue,
+            rate,
+            from,
+            to,
+            setRate,
+            setFrom,
+            setTo,
+            rate1week,
+            rate2week,
+            rate3week,
+            rate4week,
+            setRate1Week,
+            setRate2Week,
+            setRate3Week,
+            setRate4Week
+        }}>
             {children}
         </CurrencyContext.Provider>
     );

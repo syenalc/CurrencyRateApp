@@ -21,15 +21,8 @@ interface CurrencyData {
     result: number;
 }
 
-interface CountryType {
-    code: string;
-    label: string;
-    currency: string;
-}
-
 interface RateButtonProps{
     parsedTrigger:boolean;
-
 }
 export default function RateButton({parsedTrigger}:RateButtonProps) {
     const currencyContext2 = useContext(CurrencyContext);
@@ -38,19 +31,20 @@ export default function RateButton({parsedTrigger}:RateButtonProps) {
         throw new Error('CurrencySelect must be used within a CurrencyProvider');
     }
 
-    const {val1, val2,from,to,rate,setFrom,setTo,setRate,setRate1,setRate2,setRate3,setRate4} = currencyContext2;
+    const {leftValue,rightValue,from,to,rate,setFrom,setTo,
+        setRate,setRate1Week,setRate2Week,setRate3Week,setRate4Week
+    } = currencyContext2;
 
     
-    const [amount, setAmount] = useState<string>('1');
+    const amount=1;
     const [trigger, setTrigger] = useState(parsedTrigger);
 
     useEffect(() => {
         if (from && to) {
             const fetchData = async () => {
                 const endpoint = import.meta.env.VITE_API_END;
-                const keeys = import.meta.env.VITE_API_KEY;
-                const url = `https://api.exchangerate.host/${endpoint}?access_key=${keeys}&from=${from}&to=${to}&amount=${amount}`;
-
+                const keys = import.meta.env.VITE_API_KEY;
+                const url = `https://api.exchangerate.host/${endpoint}?access_key=${keys}&from=${from}&to=${to}&amount=${amount}`;
                 try {
                     const res = await fetch(url, {
                         method: "GET",
@@ -66,26 +60,21 @@ export default function RateButton({parsedTrigger}:RateButtonProps) {
                     console.log('エラーが発生しました', e);
                 }
             };
-
             fetchData();
         }
     }, [from, to, amount]);
 
     const getCurrencyRate = () => {     
-        if (val1 && val2) {
-            setFrom(val1.currency);
-            setTo(val2.currency);
-            // setLinkDisable(false);
+        if (leftValue && rightValue) {
+            setFrom(leftValue.currency);
+            setTo(rightValue.currency);
             
             // triggerの値をトグル（true <-> false）させる
             setTrigger((prev) => !prev);
             console.log("通貨換算リクエストを送信")
         } else {
-            console.log('val1またはval2がnullです');
-        }
-
-        
-        
+            console.log('leftValueまたはrightValueがnullです');
+        }    
     };
 
     
@@ -95,20 +84,14 @@ export default function RateButton({parsedTrigger}:RateButtonProps) {
         if (from) localStorage.setItem('from', JSON.stringify(from));
         if (to) localStorage.setItem('to', JSON.stringify(to));
         if (rate) localStorage.setItem('rate', JSON.stringify(rate));
-        console.log(from,to,rate)
 
         //今日の日付を取得
         const today = new Date();
         // 1週間前の日付を計算
         const oneWeekAgo = new Date(today);
-
-        
         oneWeekAgo.setDate(today.getDate() - 7);
-        // console.log(oneWeekAgo.setDate(today.getDate() - 7));
         // 2週間前の日付を計算
         const twoWeekAgo = new Date(today);
-        // console.log(twoWeekAgo);
-        // console.log(oneWeekAgo.setDate(today.getDate() - 14));
         twoWeekAgo.setDate(today.getDate() - 14);
         // 3週間前の日付を計算
         const threeWeekAgo = new Date(today);
@@ -130,21 +113,16 @@ export default function RateButton({parsedTrigger}:RateButtonProps) {
             );
         }
 
-        const formattedToday = formatdate(today);
-        // console.log(formattedToday);
         const formattedOneWeekAgo = formatdate(oneWeekAgo);
         const formattedTwoWeekAgo = formatdate(twoWeekAgo);
         const formattedThreeWeekAgo = formatdate(threeWeekAgo);
         const formattedFourWeekAgo = formatdate(fourWeekAgo);
-        // console.log(formattedOneWeekAgo);
-        // console.log(formattedTwoWeekAgo);
-        // console.log(formattedThreeWeekAgo);
-        // console.log(formattedFourWeekAgo);
+
 
         const fetchData1wago = async () => {
             const endpoint = import.meta.env.VITE_API_END;
-            const keeys = import.meta.env.VITE_API_KEY;
-            const url = `https://api.exchangerate.host/${endpoint}?access_key=${keeys}&from=${from}&to=${to}&amount=${amount}&date=${formattedOneWeekAgo}`;
+            const keys = import.meta.env.VITE_API_KEY;
+            const url = `https://api.exchangerate.host/${endpoint}?access_key=${keys}&from=${from}&to=${to}&amount=${amount}&date=${formattedOneWeekAgo}`;
 
             try {
                 const res = await fetch(url, {
@@ -154,7 +132,7 @@ export default function RateButton({parsedTrigger}:RateButtonProps) {
                     throw new Error(`エラーが発生しました。ステータス:${res.status}`);
                 }
                 const data1: CurrencyData = await res.json();
-                setRate1(data1.result);
+                setRate1Week(data1.result);
                 console.log(data1);
 
             } catch (e) {
@@ -165,8 +143,8 @@ export default function RateButton({parsedTrigger}:RateButtonProps) {
 
         const fetchData2wago = async () => {
             const endpoint = import.meta.env.VITE_API_END;
-            const keeys = import.meta.env.VITE_API_KEY;
-            const url = `https://api.exchangerate.host/${endpoint}?access_key=${keeys}&from=${from}&to=${to}&amount=${amount}&date=${formattedTwoWeekAgo}`;
+            const keys = import.meta.env.VITE_API_KEY;
+            const url = `https://api.exchangerate.host/${endpoint}?access_key=${keys}&from=${from}&to=${to}&amount=${amount}&date=${formattedTwoWeekAgo}`;
 
             try {
                 const res = await fetch(url, {
@@ -176,7 +154,7 @@ export default function RateButton({parsedTrigger}:RateButtonProps) {
                     throw new Error(`エラーが発生しました。ステータス:${res.status}`);
                 }
                 const data2: CurrencyData = await res.json();
-                setRate2(data2.result);
+                setRate2Week(data2.result);
                 console.log(data2);
                 
                 // setLinkDisable(false);
@@ -188,8 +166,8 @@ export default function RateButton({parsedTrigger}:RateButtonProps) {
 
         const fetchData3wago = async () => {
             const endpoint = import.meta.env.VITE_API_END;
-            const keeys = import.meta.env.VITE_API_KEY;
-            const url = `https://api.exchangerate.host/${endpoint}?access_key=${keeys}&from=${from}&to=${to}&amount=${amount}&date=${formattedThreeWeekAgo}`;
+            const keys = import.meta.env.VITE_API_KEY;
+            const url = `https://api.exchangerate.host/${endpoint}?access_key=${keys}&from=${from}&to=${to}&amount=${amount}&date=${formattedThreeWeekAgo}`;
 
             try {
                 const res = await fetch(url, {
@@ -199,7 +177,7 @@ export default function RateButton({parsedTrigger}:RateButtonProps) {
                     throw new Error(`エラーが発生しました。ステータス:${res.status}`);
                 }
                 const data3: CurrencyData = await res.json();
-                setRate3(data3.result);
+                setRate3Week(data3.result);
                 console.log(data3);
                 
 
@@ -211,8 +189,8 @@ export default function RateButton({parsedTrigger}:RateButtonProps) {
 
         const fetchData4wago = async () => {
             const endpoint = import.meta.env.VITE_API_END;
-            const keeys = import.meta.env.VITE_API_KEY;
-            const url = `https://api.exchangerate.host/${endpoint}?access_key=${keeys}&from=${from}&to=${to}&amount=${amount}&date=${formattedFourWeekAgo}`;
+            const keys = import.meta.env.VITE_API_KEY;
+            const url = `https://api.exchangerate.host/${endpoint}?access_key=${keys}&from=${from}&to=${to}&amount=${amount}&date=${formattedFourWeekAgo}`;
 
             try {
                 const res = await fetch(url, {
@@ -222,7 +200,7 @@ export default function RateButton({parsedTrigger}:RateButtonProps) {
                     throw new Error(`エラーが発生しました。ステータス:${res.status}`);
                 }
                 const data4: CurrencyData = await res.json();
-                setRate4(data4.result);;
+                setRate4Week(data4.result);;
                 console.log(data4);
                 
 
@@ -257,6 +235,5 @@ export default function RateButton({parsedTrigger}:RateButtonProps) {
             </Box>
             }
         </>
-    )
-        
+    )   
 };

@@ -27,46 +27,88 @@ const countries: readonly CountryType[] = [
     label: 'UAEディルハム',
     currency: 'AED',
   },
-  { code: 'AR', label: 'アルゼンチンペソ' ,currency: 'ARS'},
+  { code: 'AR',
+    label: 'アルゼンチンペソ' ,
+    currency: 'ARS'
+  },
   {
     code: 'AU',
     label: 'オーストラリアドル',
     currency: 'AUD',
   },
-  { code: 'BR', label: 'レアル',currency: 'BRL', },
+  { code: 'BR',
+    label: 'レアル',
+    currency: 'BRL', 
+  },
   {
     code: 'CA',
     label: 'カナダドル',
     currency: 'CAD',
   },
-  { code: 'CN', label: '元', currency: 'CNY' },
-  { code: 'CO', label: 'コロンビアペソ', currency: 'COP' },
+  { code: 'CN', 
+    label: '元', 
+    currency: 'CNY' 
+  },
+  { code: 'CO', 
+    label: 'コロンビアペソ', 
+    currency: 'COP' 
+  },
   {
     code: 'DE',
     label: 'ユーロ',
     currency: 'EUR'
   },
-  { code: 'GB', label: 'ポンド',currency: 'GBP', },
-  { code: 'ID', label: 'ルピア', currency: 'IDR', },
-  { code: 'IN', label: 'ルピー', currency: 'INR',},
+  { code: 'GB', 
+    label: 'ポンド',
+    currency: 'GBP', 
+  },
+  { code: 'ID', 
+    label: 'ルピア', 
+    currency: 'IDR', 
+  },
+  { code: 'IN', 
+    label: 'ルピー', 
+    currency: 'INR',
+  },
   {
     code: 'JP',
     label: '円',
     currency: 'JPY'
   },
-  { code: 'KR', label: 'ウォン',currency: 'KRW'},
-  { code: 'MX', label: 'メキシコペソ', currency: 'MXN'},
-  { code: 'PH', label: 'フィリピンペソ', currency: 'PHP'},
-  { code: 'TH', label: 'バーツ' ,currency: 'THB'},
-  { code: 'TR', label: 'リラ' ,currency: 'TRY'},
+  { code: 'KR', 
+    label: 'ウォン',
+    currency: 'KRW'
+  },
+  { code: 'MX', 
+    label: 'メキシコペソ', 
+    currency: 'MXN'
+  },
+  { code: 'PH', 
+    label: 'フィリピンペソ', 
+    currency: 'PHP'
+  },
+  { code: 'TH', 
+    label: 'バーツ' ,
+    currency: 'THB'
+  },
+  { code: 'TR', 
+    label: 'リラ' ,
+    currency: 'TRY'
+  },
   {
     code: 'US',
     label: 'ドル',
     currency: 'USD',
   },
 
-  { code: 'VN', label: 'ドン',currency: 'VND'},
-  { code: 'ZA', label: 'ランド',currency: 'ZAR'},
+  { code: 'VN', 
+    label: 'ドン',
+    currency: 'VND'
+  },
+  { code: 'ZA', 
+    label: 'ランド',
+    currency: 'ZAR'
+  },
 ];
 
 export default function CountrySelect({parsedTrigger}:CountrySelectProps) {
@@ -76,21 +118,21 @@ export default function CountrySelect({parsedTrigger}:CountrySelectProps) {
     throw new Error('CurrencySelect must be used within a CurrencyProvider');
   }
 
-  const { val1, val2, setVal1, setVal2 } = currencyContext;
+  const { leftValue, rightValue, setLeftValue, setRightValue } = currencyContext;
 
 
-  const onChangeleft=(event:any,newValue:CountryType | null)=> setVal1(newValue);
-  const onChangeright=(event:any,newValue:CountryType | null)=> setVal2(newValue);
+  const onChangeleft=(event:any,newValue:CountryType | null)=> setLeftValue(newValue);
+  const onChangeright=(event:any,newValue:CountryType | null)=> setRightValue(newValue);
 
 
   const exchangeCurrency = () => {
-    if (val1 && val2) {
-      // Swap labels between val1 and val2
-      console.log(val1);
-      const newLabel1= val2;
-      const newLabel2 = val1;
-      setVal1(newLabel1);
-      setVal2(newLabel2);
+    if (leftValue && rightValue) {
+      // Swap labels between leftValue and rightValue
+      console.log(leftValue);
+      const newLabel1= rightValue;
+      const newLabel2 = leftValue;
+      setLeftValue(newLabel1);
+      setRightValue(newLabel2);
 
     }
     
@@ -108,7 +150,7 @@ export default function CountrySelect({parsedTrigger}:CountrySelectProps) {
           autoHighlight
           getOptionLabel={(option) => option.label}
           onChange={onChangeleft}// Update val1 on option select
-          value={val1}
+          value={leftValue}
           renderOption={(props, option) => {
             const { key, ...optionProps } = props;
             return (
@@ -139,7 +181,7 @@ export default function CountrySelect({parsedTrigger}:CountrySelectProps) {
                 placeholder: '入力してください', 
               }}
               sx={{ '& .MuiInputBase-input': { width: 100 } }}
-              value={val1 ? val1.label : ''} // Display the label of the selected option
+              value={leftValue ? leftValue.label : ''} // Display the label of the selected option
            />
            )}
           />
@@ -152,8 +194,8 @@ export default function CountrySelect({parsedTrigger}:CountrySelectProps) {
           options={countries}
           autoHighlight
           getOptionLabel={(option) => option.label}
-          onChange={onChangeright} // Update val2 
-          value={val2}
+          onChange={onChangeright} // Update rightValue 
+          value={rightValue}
           renderOption={(props, option) => {
            const { key, ...optionProps } = props;
             return (
@@ -184,7 +226,7 @@ export default function CountrySelect({parsedTrigger}:CountrySelectProps) {
                 ...params.inputProps,
                 placeholder: '入力してください', // Add the placeholder here
               }}
-              value={val2 ? val2.label : ''} // Display the label of the selected option
+              value={rightValue ? rightValue.label : ''} // Display the label of the selected option
             />
         )}
         />
