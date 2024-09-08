@@ -26,3 +26,6 @@ dist-ssr
 
 src/pages/Login.tsx
 src/pages/Signup.tsx
+
+src/components/LoginForm.tsx
+src/components/SignUpForm.tsx
