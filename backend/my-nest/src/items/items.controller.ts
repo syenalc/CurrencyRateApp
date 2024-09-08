@@ -7,29 +7,47 @@ import { Item } from './items.model';
 export class ItemsController {
     constructor(private readonly itemsService: ItemsService){}
     @Get()
-    findAll():Item[]{
-        return this.itemsService.findAll();
+    async findAll(): Promise<Item[]> {
+        return await this.itemsService.findAll();
     }
+    // findAll():Item[]{
+    //     return this.itemsService.findAll();
+    // }
 
-    @Get(':id')
-    findById(@Param('id')id:string):Item{
-        return this.itemsService.findById(id);
-    }
+    // @Get(':id')
+    // findById(@Param('id')id:string):Item{
+    //     return this.itemsService.findById(id);
+    // }
 
+    // @Post()
+    // create(
+    //     @Body('id')id:string,
+    //     @Body('name')name:string,
+    //     @Body('description')description:string,
+    //     @Body('createdAt')createdAt:string,
+    // ):Item{
+    //     const item:Item={
+    //         id,
+    //         name,
+    //         description,
+    //         createdAt,
+    //     }
+    //     return this.itemsService.create(item);
+    // }
     @Post()
-    create(
-        @Body('id')id:string,
-        @Body('name')name:string,
-        @Body('description')description:string,
-        @Body('createdAt')createdAt:string,
-    ):Item{
-        const item:Item={
+    async create(
+        @Body('id') id: string,
+        @Body('name') name: string,
+        @Body('description') description: string,
+        @Body('createdAt') createdAt: string,
+    ): Promise<Item> {  // 返り値をPromise<Item>にする
+        const item: Item = {
             id,
             name,
             description,
             createdAt,
-        }
-        return this.itemsService.create(item);
+        };
+        return await this.itemsService.create(item);  // 非同期処理なのでawaitを付ける
     }
 
     // @Put(':id')
@@ -44,16 +62,22 @@ export class ItemsController {
     //     return this.itemsService.update(id, updatedItem);
     // }
     @Put(':id')
-    update(
+    async update(
         @Param('id') id: string,
         @Body('description') description: string, // リクエストボディから description を取得
-    ) {
-        return this.itemsService.update(id, description);
+    ): Promise<Item> {
+        return await this.itemsService.update(id, description);  // 非同期処理のためawaitを付ける
     }
 
 
+
+    // @Delete(':id')
+    // delete(@Param('id')id:string){
+    //     this.itemsService.delete(id);
+    // }
     @Delete(':id')
-    delete(@Param('id')id:string){
-        this.itemsService.delete(id);
+    async delete(@Param('id') id: string): Promise<void> {
+        await this.itemsService.delete(id);  // 非同期処理のためawaitを付ける
     }
+
 }

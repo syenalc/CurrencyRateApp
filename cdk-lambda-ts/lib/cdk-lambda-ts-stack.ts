@@ -17,12 +17,13 @@ export class CurrencyRateAppStack extends cdk.Stack {
             websiteErrorDocument: 'error.html',  // エラードキュメントの指定
           });
 
-        // // DynamoDBテーブルの定義
-        // const table = new dynamodb.Table(this, 'CurrencyRateAppTable', {
-        //     partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
-        //     billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-        //     removalPolicy: cdk.RemovalPolicy.DESTROY,
-        // });
+        // DynamoDBテーブルの定義
+        const table = new dynamodb.Table(this, 'CurrencyRateAppTable', {
+            tableName: 'CurrencyRateAppTable',
+            partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
+            billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+            removalPolicy: cdk.RemovalPolicy.DESTROY,
+        });
 
         // Nestjs Lambda関数の定義
         const handler = new lambda.Function(this, 'NestJsLambda', {
@@ -74,7 +75,7 @@ export class CurrencyRateAppStack extends cdk.Stack {
         item.addMethod('DELETE', new apigateway.LambdaIntegration(handler));
         
         // // 必要なアクセス権を付与
-        // table.grantReadWriteData(handler);
+        table.grantReadWriteData(handler);
         bucket.grantReadWrite(handler);
     }
 }
