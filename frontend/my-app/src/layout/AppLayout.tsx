@@ -5,8 +5,7 @@ import Link from '@mui/material/Link';
 import HomeIcon from '@mui/icons-material/Home';
 import { Outlet } from 'react-router-dom';
 import { Box } from '@mui/material';
-import LoginIcon from '@mui/icons-material/Login';
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+
 
 
 
@@ -20,24 +19,6 @@ export default function IconBreadcrumbs() {
             fontWeight={"fontWeightRegular"}
         >為替速報</Typography>
         <Breadcrumbs aria-label="breadcrumb" sx={{textAlign:"right"}}>
-          <Link
-          underline="hover"
-          sx={{ display: 'flex', alignItems: 'center' }}
-          color="inherit"
-          href="/signup"
-         >
-          <AppRegistrationIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-          サインアップ
-          </Link>
-          <Link
-          underline="hover"
-          sx={{ display: 'flex', alignItems: 'center' }}
-          color="inherit"
-          href="/login"
-         >
-          <LoginIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-          ログイン
-         </Link>
          <Link
           underline="hover"
           sx={{ display: 'flex', alignItems: 'center' }}
