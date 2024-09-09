@@ -36,16 +36,6 @@ export const handler: Handler = async (event: any, context: Context, callback: C
   const response = await awsServerlessExpress.proxy(cachedServer, event, context, 'PROMISE').promise;
 
   // CORSヘッダーを追加して、適切なレスポンスを設定
-  // return {
-  //   statusCode: 200,
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     'Access-Control-Allow-Origin': 'http://currencyrateappstack-currencyrateappbucketd2265f87-ydogjuktefsa.s3-website-ap-northeast-1.amazonaws.com',  // 必要に応じて正しいオリジンに設定
-  //     'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
-  //     'Access-Control-Allow-Methods': 'OPTIONS, GET, POST, PUT, DELETE',
-  //   },
-  //   // body: JSON.stringify({ items: [] })  // 空でも適切なJSONを返す
-  // };
   response.headers = {
     // ...response.headers,
     'Access-Control-Allow-Origin': '*',
