@@ -69,7 +69,7 @@ const Home = () => {
         variant="h2"
         fontWeight={"fontWeightRegular"}
       >
-        為替速報掲示板
+        為替速報メモ
       </Typography>
       <FormDialog onNewItemCreated={fetchItems} />
       <Box>

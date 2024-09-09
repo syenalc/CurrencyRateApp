@@ -38,7 +38,7 @@ export const handler: Handler = async (event: any, context: Context, callback: C
   // CORSヘッダーを追加して、適切なレスポンスを設定
   response.headers = {
     // ...response.headers,
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': 'http://currencyrateappstack-currencyrateappbucketd2265f87-x2vihalhng7a.s3-website-ap-northeast-1.amazonaws.com',
     'Access-Control-Allow-Headers': 'Origin, Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
     'Access-Control-Allow-Methods': 'OPTIONS,GET,POST,PUT,DELETE',
   };
