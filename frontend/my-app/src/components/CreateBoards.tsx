@@ -36,7 +36,7 @@ export default function FormDialog({onNewItemCreated}:FormDialogProp) {
   const handleSubmit = async() => {
     const newItem: Item = {
         id: uuidv4(),  // ランダムなIDを生成
-        name: `User-${uuidv4().slice(0, 8)}`,  // ランダムなユーザー名を生成
+        name: `User-${uuidv4().slice(0, 15)}`,  // ランダムなユーザー名を生成
         description: formData.description,
         createdAt: new Date().toISOString(),
     };
