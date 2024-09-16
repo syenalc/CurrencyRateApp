@@ -48,6 +48,9 @@ export default function FormDialog({onNewItemCreated}:FormDialogProp) {
     handleClose();
   };
 
+
+  
+
   return (
     <div className='comment-form'>
       <Button variant="contained" onClick={handleClickOpen}>
@@ -56,7 +59,7 @@ export default function FormDialog({onNewItemCreated}:FormDialogProp) {
       <Dialog open={open} onClose={handleClose}>
         {/* <DialogTitle>コメント</DialogTitle> */}
         <DialogContent>
-          <TextField
+          <TextField          
             autoFocus
             margin="dense"
             name="description"

@@ -22,6 +22,15 @@ export default function OutlinedCard({ sx, item, onEdit, onDelete}: OutlinedCard
     setExpanded(!expanded); // コメント欄の拡大・縮小の状態を切り替える
   };
 
+  const formatDescriptionWithLineBreaks = (description: string) => {
+    return description.split('\n').map((line, index) => (
+      <React.Fragment key={index}>
+        {line}
+        <br />
+      </React.Fragment>
+    ));
+  };
+
   return (
     <>
       <Box sx={{ minWidth: 275, ...sx }}>
@@ -41,9 +50,12 @@ export default function OutlinedCard({ sx, item, onEdit, onDelete}: OutlinedCard
               </Typography>
             </Box>
             <br />
-            <Typography variant="body2">
-              {item.description}
+            {/* <Typography variant="body2">
+              
               <br />
+            </Typography> */}
+            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                {formatDescriptionWithLineBreaks(item.description)}
             </Typography>
           </CardContent>
           <CardActions sx={{display:"flex",justifyContent: 'space-between'}}>
