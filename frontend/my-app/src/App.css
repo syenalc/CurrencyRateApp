@@ -3,6 +3,21 @@
     width: 80%;
     margin: auto;
 }
+/* 表示順タブ */
+.order{
+    padding: 0px 50px !important;
+    width: 80%;
+    margin: auto;
+    text-align: center;
+    color:#007bff;
+}
+.order-list{
+    padding: 0px 50px !important;
+    width: 80%;
+    margin: auto;
+    text-align: center;
+    color:#007bff;
+}
 .css-135qdec {
     padding:10px !important;
 }

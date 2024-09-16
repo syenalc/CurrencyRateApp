@@ -8,6 +8,8 @@ import { CurrencyContext } from "../context/CurrencyContext";
 import { Item } from "../utils/items.model";
 import { findAll } from "../utils/api";
 import AlertDialog from "../components/DeleteBoards";
+import BasicSelect from "../components/Order";
+import BasicMenu from "../components/Order";
 
 const Home = () => {
   const currencyContext = useContext(CurrencyContext);
@@ -59,6 +61,9 @@ const Home = () => {
     setOpenDelete(true);  // ダイアログを開く
   };
   // parsedTrigger={JSON.parse(localStorage.getItem('trigger') || 'false')}
+  
+  //並び替え機能
+  const [order, setOrder] = React.useState<string>("0");
   return (
     <>
       <Box sx={{ padding: "50px" }}>
@@ -72,8 +77,18 @@ const Home = () => {
         為替速報メモ
       </Typography>
       <FormDialog onNewItemCreated={fetchItems} />
+      {/* <BasicSelect 
+        order={order}
+        setOrder={setOrder}
+      /> */}
+      <BasicMenu 
+        order={order}
+        setOrder={setOrder}
+      />
       <Box>
-        {items.map((item) => (
+        {items
+        .sort((a, b) => order==="0" ? b.createdAt.localeCompare(a.createdAt) :a.createdAt.localeCompare(b.createdAt)) 
+        .map((item) => (
           <OutlinedCard
             key={item.id}
             item={item}
