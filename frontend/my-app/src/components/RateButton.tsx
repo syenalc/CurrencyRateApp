@@ -1,4 +1,4 @@
-import { useState,useEffect,useContext } from 'react';
+import React, { useState,useEffect,useContext } from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -7,6 +7,15 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import { CurrencyContext } from '../context/CurrencyContext';
+import FormDialog from './CreateBoards';
+import BasicMenu from './Order';
+import UpdateDialog from './UpdateBoards';
+import AlertDialog from './DeleteBoards';
+import { findAll } from '../utils/api';
+import OutlinedCard from './Boards';
+import { Item } from '../utils/items.model';
+
+
 
 interface CurrencyData {
     success: boolean;
@@ -154,12 +163,58 @@ export default function RateButton() {
 
     }
 
-    
+    const [items, setItems] = useState<Item[]>([]);
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null); //updateダイアログが選択された状態
+  const [open, setOpen] = useState(false);  // updateダイアログの開閉状態を管理
+
+  const [selectedDeleteItem, setSelectedDeleteItem] = useState<string | null>(null); //deleteダイアログが選択された状態
+  const [openDelete, setOpenDelete] = useState(false);  // deleteダイアログの開閉状態を管理
+
+  const fetchItems = async () => {
+    const data = await findAll();
+    if (data) {
+      setItems(data);
+    }
+  };
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
+
+  //編集機能
+  const handleItemUpdated = async () => {
+    await fetchItems();
+    setSelectedItem(null);
+    setOpen(false);  // ダイアログを閉じる
+  };
+
+  const handleEdit = (item: Item) => {
+    setSelectedItem(item);
+    setOpen(true);  // ダイアログを開く
+  };
+
+  //削除機能
+  const handleItemAfterDelete = async ()=>{
+    await fetchItems();
+    setSelectedDeleteItem(null);
+    setOpenDelete(false);  // ダイアログを閉じる
+  }
+
+  const handleDelete = (itemId:string) => {
+    setSelectedDeleteItem(itemId);
+    setOpenDelete(true);  // ダイアログを開く
+  };
+  // parsedTrigger={JSON.parse(localStorage.getItem('trigger') || 'false')}
+  
+  //並び替え機能
+  const [order, setOrder] = React.useState<string>("0");
     return(
         <>
             {/* MUIのbuttonスタイルが適用されないためbootstrapのbuttonを使用 */}
             <button onClick={getCurrencyRate} type="button" className="btn btn-outline-primary" style={{margin:"auto", display:"flex", padding:"10px 40px",fontSize:"1.4em"}}>換算</button>
-            {rate !== null && <Box sx={{marginTop:"40px"}}>
+            {rate !== null &&
+            <>
+            <Box sx={{marginTop:"40px"}}>
             <Card sx={{ minWidth: 275, maxWidth: 500, margin:"auto", padding:"20px" }}>
                 <CardContent>
                     <Typography sx={{ fontSize: 14 }}  color="text.secondary" gutterBottom>
@@ -171,6 +226,48 @@ export default function RateButton() {
                 </CardActions>
             </Card>
             </Box>
+            <Typography
+                sx={{ textAlign: "center", fontSize: "40px" }}
+                variant="h2"
+                fontWeight={"fontWeightRegular"}
+            >
+            為替速報メモ
+            </Typography>
+            <FormDialog onNewItemCreated={fetchItems} />
+            <BasicMenu 
+                order={order}
+                setOrder={setOrder}
+            />
+            <Box>
+                {items
+                .sort((a, b) => order==="0" ? b.createdAt.localeCompare(a.createdAt) :a.createdAt.localeCompare(b.createdAt)) 
+                .map((item) => (
+                    <OutlinedCard
+                    key={item.id}
+                    item={item}
+                    sx={{ textAlign: "center", padding: "50px" }}
+                    onEdit={handleEdit}  // 編集ボタンがクリックされたときに呼び出す
+                    onDelete={handleDelete}
+                />
+                ))}
+            </Box>
+            {selectedItem && (
+            <UpdateDialog
+                item={selectedItem}
+                onItemUpdated={handleItemUpdated}
+                open={open}  // ダイアログの開閉状態を渡す
+                onClose={() => setOpen(false)}  // ダイアログを閉じるための関数を渡す
+            />
+            )}
+            {selectedDeleteItem && (
+                <AlertDialog
+            deleteItemId={selectedDeleteItem}
+            onItemAfterDelete={handleItemAfterDelete}
+            openDelete={openDelete}  // ダイアログの開閉状態を渡す
+            onClose={() => setOpenDelete(false)}  // ダイアログを閉じるための関数を渡す
+            />
+            )}
+            </>
             }
         </>
     )   

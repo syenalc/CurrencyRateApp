@@ -39,6 +39,7 @@ export default function FormDialog({onNewItemCreated}:FormDialogProp) {
         name: `User-${uuidv4().slice(0, 15)}`,  // ランダムなユーザー名を生成
         description: formData.description,
         createdAt: new Date().toISOString(),
+        
     };
 
     const createdItem = await create(newItem);
