@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
+import { Link as RouterLink } from 'react-router-dom';
 import Link from '@mui/material/Link';
 import HomeIcon from '@mui/icons-material/Home';
 import { Outlet } from 'react-router-dom';
@@ -19,11 +20,18 @@ export default function IconBreadcrumbs() {
             fontWeight={"fontWeightRegular"}
         >為替速報</Typography>
         <Breadcrumbs aria-label="breadcrumb" sx={{textAlign:"right"}}>
-         <Link
+         {/* <Link
           underline="hover"
           sx={{ display: 'flex', alignItems: 'center' }}
           color="inherit"
           href="/"
+         > */}
+         <Link
+          component={RouterLink}  //React RouterのLinkに変更
+          underline="hover"
+          sx={{ display: 'flex', alignItems: 'center' }}
+          color="inherit"
+          to="/"  // "href"ではなく"to"を使用
          >
           <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
           ホーム
