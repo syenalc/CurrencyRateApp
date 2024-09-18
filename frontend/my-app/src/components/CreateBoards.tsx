@@ -8,15 +8,18 @@ import CreateIcon from '@mui/icons-material/Create';
 import { v4 as uuidv4 } from 'uuid'; 
 import { Item } from '../utils/items.model';
 import { create } from '../utils/api';
+import { formGroupClasses } from '@mui/material';
 
 interface FormDialogProp{
   onNewItemCreated:() => Promise<void>;
+  from:string | null;
+  to:string | null;
 }
 
-export default function FormDialog({onNewItemCreated}:FormDialogProp) {
+export default function FormDialog({onNewItemCreated,from,to}:FormDialogProp) {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({ description: '' });
-
+  console.log(from,to);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -39,9 +42,10 @@ export default function FormDialog({onNewItemCreated}:FormDialogProp) {
         name: `User-${uuidv4().slice(0, 15)}`,  // ランダムなユーザー名を生成
         description: formData.description,
         createdAt: new Date().toISOString(),
-        
+        country1: from,
+        country2: to,
     };
-
+    console.log('送信されるアイテム:', newItem);  // ここで確認
     const createdItem = await create(newItem);
     console.log('新しいアイテムが作成されました:', createdItem);
 

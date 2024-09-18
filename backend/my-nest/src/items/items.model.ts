@@ -3,4 +3,6 @@ export interface Item{
     name:string;
     description:string;
     createdAt:string;
+    country1:string | null;
+    country2:string | null;
 }

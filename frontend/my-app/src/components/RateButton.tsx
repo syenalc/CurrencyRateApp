@@ -164,50 +164,50 @@ export default function RateButton() {
     }
 
     const [items, setItems] = useState<Item[]>([]);
-  const [selectedItem, setSelectedItem] = useState<Item | null>(null); //updateダイアログが選択された状態
-  const [open, setOpen] = useState(false);  // updateダイアログの開閉状態を管理
+    const [selectedItem, setSelectedItem] = useState<Item | null>(null); //updateダイアログが選択された状態
+    const [open, setOpen] = useState(false);  // updateダイアログの開閉状態を管理
 
-  const [selectedDeleteItem, setSelectedDeleteItem] = useState<string | null>(null); //deleteダイアログが選択された状態
-  const [openDelete, setOpenDelete] = useState(false);  // deleteダイアログの開閉状態を管理
+    const [selectedDeleteItem, setSelectedDeleteItem] = useState<string | null>(null); //deleteダイアログが選択された状態
+    const [openDelete, setOpenDelete] = useState(false);  // deleteダイアログの開閉状態を管理
 
-  const fetchItems = async () => {
-    const data = await findAll();
-    if (data) {
-      setItems(data);
+    const fetchItems = async () => {
+        const data = await findAll();
+            if (data) {
+            setItems(data);
+        }
+    };
+
+    useEffect(() => {
+        fetchItems();
+    }, []);
+
+    //編集機能
+    const handleItemUpdated = async () => {
+        await fetchItems();
+        setSelectedItem(null);
+        setOpen(false);  // ダイアログを閉じる
+    };
+
+    const handleEdit = (item: Item) => {
+        setSelectedItem(item);
+        setOpen(true);  // ダイアログを開く
+    };
+
+    //削除機能
+    const handleItemAfterDelete = async ()=>{
+        await fetchItems();
+        setSelectedDeleteItem(null);
+        setOpenDelete(false);  // ダイアログを閉じる
     }
-  };
 
-  useEffect(() => {
-    fetchItems();
-  }, []);
-
-  //編集機能
-  const handleItemUpdated = async () => {
-    await fetchItems();
-    setSelectedItem(null);
-    setOpen(false);  // ダイアログを閉じる
-  };
-
-  const handleEdit = (item: Item) => {
-    setSelectedItem(item);
-    setOpen(true);  // ダイアログを開く
-  };
-
-  //削除機能
-  const handleItemAfterDelete = async ()=>{
-    await fetchItems();
-    setSelectedDeleteItem(null);
-    setOpenDelete(false);  // ダイアログを閉じる
-  }
-
-  const handleDelete = (itemId:string) => {
-    setSelectedDeleteItem(itemId);
-    setOpenDelete(true);  // ダイアログを開く
-  };
-  // parsedTrigger={JSON.parse(localStorage.getItem('trigger') || 'false')}
+    const handleDelete = (itemId:string) => {
+        setSelectedDeleteItem(itemId);
+        setOpenDelete(true);  // ダイアログを開く
+    };
+    // parsedTrigger={JSON.parse(localStorage.getItem('trigger') || 'false')}
   
-  //並び替え機能
-  const [order, setOrder] = React.useState<string>("0");
+    //並び替え機能
+    const [order, setOrder] = React.useState<string>("0");
     return(
         <>
             {/* MUIのbuttonスタイルが適用されないためbootstrapのbuttonを使用 */}
@@ -233,13 +233,18 @@ export default function RateButton() {
             >
             為替速報メモ
             </Typography>
-            <FormDialog onNewItemCreated={fetchItems} />
+            <FormDialog 
+                onNewItemCreated={fetchItems} 
+                from={from}
+                to={to}
+            />
             <BasicMenu 
                 order={order}
                 setOrder={setOrder}
             />
             <Box>
                 {items
+                .filter((item)=> (item.country1 === from && item.country2===to) || (item.country2 === from && item.country1===to))
                 .sort((a, b) => order==="0" ? b.createdAt.localeCompare(a.createdAt) :a.createdAt.localeCompare(b.createdAt)) 
                 .map((item) => (
                     <OutlinedCard
@@ -260,12 +265,12 @@ export default function RateButton() {
             />
             )}
             {selectedDeleteItem && (
-                <AlertDialog
-            deleteItemId={selectedDeleteItem}
-            onItemAfterDelete={handleItemAfterDelete}
-            openDelete={openDelete}  // ダイアログの開閉状態を渡す
-            onClose={() => setOpenDelete(false)}  // ダイアログを閉じるための関数を渡す
-            />
+            <AlertDialog
+                deleteItemId={selectedDeleteItem}
+                onItemAfterDelete={handleItemAfterDelete}
+                openDelete={openDelete}  // ダイアログの開閉状態を渡す
+                onClose={() => setOpenDelete(false)}  // ダイアログを閉じるための関数を渡す
+                />
             )}
             </>
             }

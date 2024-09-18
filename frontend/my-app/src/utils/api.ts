@@ -35,6 +35,7 @@ export async function create(item:Item){
         }
         const data:Item[]= await res.json();
         console.log(item.id);
+        console.log(item.country1);
         return data;
     } catch (e){
         console.log('エラーが発生しました', e);

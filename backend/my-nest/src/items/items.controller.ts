@@ -37,12 +37,16 @@ export class ItemsController {
         @Body('name') name: string,
         @Body('description') description: string,
         @Body('createdAt') createdAt: string,
+        @Body('country1') country1: string | null,
+        @Body('country2') country2: string | null,
     ): Promise<Item> {  // 返り値をPromise<Item>にする
         const item: Item = {
             id,
             name,
             description,
             createdAt,
+            country1,
+            country2,
         };
         return await this.itemsService.create(item);  // 非同期処理なのでawaitを付ける
     }
