@@ -24,8 +24,3 @@ dist-ssr
 *.sln
 *.sw?
 
-src/pages/Login.tsx
-src/pages/Signup.tsx
-
-src/components/LoginForm.tsx
-src/components/SignUpForm.tsx
