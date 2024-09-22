@@ -1,5 +1,5 @@
 import { Item } from "./items.model";
-import { User } from "./users.model";
+import { Auth } from "./users.model";
 
 const API_BASE_URL:string = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 
@@ -78,6 +78,28 @@ export async function deleteItemApi(itemId:string){
             throw new Error(`エラーが発生しました。ステータス: ${res.status}, メッセージ: ${errorBody}`);
         }
         return {};
+    } catch (e){
+        console.log('エラーが発生しました', e);
+        throw e;
+    }
+};
+
+export async function signup(auth:Auth){
+    try{
+        const res = await fetch(`${API_BASE_URL}/auth`,{
+            method:"POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(auth), // フロントエンドで入力されたデータを送信
+        });
+        if (!res.ok) {
+            const errorBody = await res.text(); // レスポンスボディをテキストで取得
+            throw new Error(`エラーが発生しました。ステータス: ${res.status}, メッセージ: ${errorBody}`);
+        }
+        const data:Auth= await res.json();
+        console.log(auth.id);
+        return data;
     } catch (e){
         console.log('エラーが発生しました', e);
         throw e;
