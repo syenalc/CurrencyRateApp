@@ -25,6 +25,14 @@ export class CurrencyRateAppStack extends cdk.Stack {
             removalPolicy: cdk.RemovalPolicy.DESTROY,
         });
 
+        // CurrencyRateAppAuthTable (ユーザー認証用のテーブル)
+        const authTable = new dynamodb.Table(this, 'CurrencyRateAppAuthTable', {
+          tableName: 'CurrencyRateAppAuthTable',
+          partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING }, // id をプライマリキーとして使用
+          billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+          removalPolicy: cdk.RemovalPolicy.DESTROY,
+        });
+
         // Nestjs Lambda関数の定義
         const handler = new lambda.Function(this, 'NestJsLambda', {
           runtime: lambda.Runtime.NODEJS_20_X,
@@ -76,6 +84,7 @@ export class CurrencyRateAppStack extends cdk.Stack {
         
         // // 必要なアクセス権を付与
         table.grantReadWriteData(handler);
+        authTable.grantReadWriteData(handler);
         bucket.grantReadWrite(handler);
     }
 }
