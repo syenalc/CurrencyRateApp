@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Auth } from './auth.model';
 import * as AWS from 'aws-sdk';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -13,6 +14,15 @@ export class AuthService {
     }
 
     async create(auth: Auth): Promise<Auth> {
+        if (auth.password) {
+            const saltRounds = 10;
+            console.log('ハッシュ化前のパスワード:', auth.password);
+            auth.password = await bcrypt.hash(auth.password, saltRounds);
+            console.log('ハッシュ化後のパスワード:', auth.password);
+        }else{
+            console.log("aaa");
+        }
+
         console.log('AuthService - Saving user to DynamoDB', auth);
         const params = {
             TableName: this.tableName, // DynamoDBテーブル名
