@@ -7,12 +7,15 @@ import { signup } from '../utils/api';
 import { Auth } from '../utils/users.model';
 import { v4 as uuidv4 } from 'uuid'; 
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function ComposedTextField() {
   const [name, setName] = useState(''); // ユーザー名の状態
   const [email, setEmail] = useState(''); // メールアドレスの状態
   const [password, setPassword] = useState(''); // パスワードの状態
   const [error, setError] = useState<string | null>(null); // エラーメッセージの状態
+  const navigate = useNavigate();
+
   const handleSubmit = async() => {
     try {
       const newUser: Auth = {
@@ -26,6 +29,12 @@ export default function ComposedTextField() {
 
       const createdUser = await signup(newUser);
       console.log('新しいアイテムが作成されました:', createdUser);
+
+      setName('');
+      setEmail('');
+      setPassword('');
+
+      navigate('/');  // '/' へのリダイレクト
     } catch (e) {
       console.error('エラーが発生しました', e);
       setError('サインアップに失敗しました。もう一度お試しください。');
