@@ -81,6 +81,10 @@ export class CurrencyRateAppStack extends cdk.Stack {
         const item = items.addResource('{id}'); 
         item.addMethod('PUT', new apigateway.LambdaIntegration(handler));
         item.addMethod('DELETE', new apigateway.LambdaIntegration(handler));
+
+        // /auth リソースの定義 (ユーザー認証用)
+        const auth = api.root.addResource('auth');
+        auth.addMethod('POST', new apigateway.LambdaIntegration(handler));
         
         // // 必要なアクセス権を付与
         table.grantReadWriteData(handler);

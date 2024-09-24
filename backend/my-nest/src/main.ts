@@ -32,6 +32,8 @@ async function bootstrapServer(): Promise<Server> {
 }
 
 export const handler: Handler = async (event: any, context: Context, callback: Callback) => {
+  console.log("Received event:", JSON.stringify(event));
+  
   cachedServer = await bootstrapServer();
   const response = await awsServerlessExpress.proxy(cachedServer, event, context, 'PROMISE').promise;
 

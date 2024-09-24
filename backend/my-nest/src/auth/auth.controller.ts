@@ -14,6 +14,7 @@ export class AuthController {
         @Body('email') email: string | null,
         @Body('password') password: string | null,
     ): Promise<Auth> {  // 返り値をPromise<Item>にする
+        console.log('AuthController - POST /auth called');
         const newUser: Auth = {
             id,
             name,

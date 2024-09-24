@@ -97,7 +97,7 @@ export async function signup(auth:Auth){
             const errorBody = await res.text(); // レスポンスボディをテキストで取得
             throw new Error(`エラーが発生しました。ステータス: ${res.status}, メッセージ: ${errorBody}`);
         }
-        const data:Auth= await res.json();
+        const data:Auth[]= await res.json();
         console.log(auth.id);
         return data;
     } catch (e){
