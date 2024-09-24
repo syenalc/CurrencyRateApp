@@ -1,4 +1,5 @@
 import { Item } from "./items.model";
+import { Login } from "./login.model";
 import { Auth } from "./users.model";
 
 const API_BASE_URL:string = import.meta.env.VITE_API_URL || 'http://localhost:4000';
@@ -101,6 +102,30 @@ export async function signup(auth:Auth){
         console.log(auth.id);
         return data;
     } catch (e){
+        console.log('エラーが発生しました', e);
+        throw e;
+    }
+};
+
+export async function login(login: Login) {
+    try {
+        const res = await fetch(`${API_BASE_URL}/auth/login`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(login), // フロントエンドで入力されたデータを送信
+        });
+
+        if (!res.ok) {
+            const errorBody = await res.text(); // エラー時のレスポンスボディを取得
+            throw new Error(`エラーが発生しました。ステータス: ${res.status}, メッセージ: ${errorBody}`);
+        }
+
+        const data = await res.json(); // ログイン結果を取得
+        console.log('ログイン成功:', data);
+        return data;
+    } catch (e) {
         console.log('エラーが発生しました', e);
         throw e;
     }
