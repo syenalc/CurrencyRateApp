@@ -66,6 +66,10 @@ form{
 .css-0{
     text-align: center;
 }
+/* サインアップボタン */
+.css-qxh7fn{
+    width: auto !important;
+}
 .MuiButton-containedPrimary{
     color:#007bff !important;
     font-size: 1.2em;
