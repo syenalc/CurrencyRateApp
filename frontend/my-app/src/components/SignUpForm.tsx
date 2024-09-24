@@ -21,6 +21,7 @@ export default function ComposedTextField() {
   const [error, setError] = useState<string | null>(null); // エラーメッセージの状態
   const navigate = useNavigate();
 
+  //barの状態管理
   const [state, setState] = React.useState<State>({
     open: false,
     vertical: 'top',

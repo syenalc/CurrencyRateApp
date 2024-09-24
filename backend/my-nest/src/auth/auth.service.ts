@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Auth } from './auth.model';
 import * as AWS from 'aws-sdk';
 import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthService {
@@ -38,4 +39,39 @@ export class AuthService {
             throw new Error('Could not save item');
         }
     }
+
+    async validateUser(email: string, password: string): Promise<boolean> {
+        const params = {
+          TableName: this.tableName,
+          KeyConditionExpression: 'email = :email',
+          ExpressionAttributeValues: {
+            ':email': email,
+          },
+        };
+    
+        try {
+            const result = await this.dynamoDb.query(params).promise();
+        
+            if (result.Items && result.Items.length > 0) {
+                const user = result.Items[0] as Auth;
+                return await bcrypt.compare(password, user.password); // パスワードを照合
+            }
+            return false; // ユーザーが見つからない場合
+        } catch (error) {
+            console.error('Error querying DynamoDB', error);
+            throw new Error('ユーザー認証に失敗しました');
+        }
+      }
+    
+      async generateJwtToken(email: string): Promise<string> {
+        // JWTトークンを生成するロジック。ここでは仮にシンプルなシークレットキーを使っていますが、
+        // 実際の環境では、process.env.JWT_SECRETなどの環境変数を使用します。
+        const payload = { email };
+        try {
+            return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+        } catch (error) {
+            console.error('Error generating JWT token', error);
+            throw new Error('JWTトークンの生成に失敗しました');
+        }
+      }
 }
