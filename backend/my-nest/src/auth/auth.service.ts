@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Auth } from './auth.model';
 import * as AWS from 'aws-sdk';
 import * as bcrypt from 'bcrypt';
@@ -9,7 +10,10 @@ export class AuthService {
     private dynamoDb: AWS.DynamoDB.DocumentClient;
     private readonly tableName = 'CurrencyRateAppAuthTable'; // DynamoDBテーブル名
 
-    constructor() {
+    // constructor() {
+        //     this.dynamoDb = new AWS.DynamoDB.DocumentClient();
+        // }
+    constructor(private configService: ConfigService) { // ConfigServiceを注入
         this.dynamoDb = new AWS.DynamoDB.DocumentClient();
     }
 
@@ -38,34 +42,56 @@ export class AuthService {
 
     async validateUser(email: string, password: string): Promise<boolean> {
         const params = {
-          TableName: this.tableName,
-          KeyConditionExpression: 'email = :email',
-          ExpressionAttributeValues: {
-            ':email': email,
-          },
+            TableName: this.tableName,
+            IndexName: 'EmailIndex', // GSIの名前
+            KeyConditionExpression: 'email = :email',
+            ExpressionAttributeValues: {
+                ':email': email,
+            },
         };
     
         try {
+            // DynamoDBから該当するメールアドレスのユーザーを取得
             const result = await this.dynamoDb.query(params).promise();
         
+            // mailが一致したときにパスワードの照合を行う
             if (result.Items && result.Items.length > 0) {
                 const user = result.Items[0] as Auth;
-                return await bcrypt.compare(password, user.password); // パスワードを照合
+                const isPasswordValid = await bcrypt.compare(password, user.password);
+    
+                if (!isPasswordValid) {
+                    console.error('パスワードが一致しません');
+                }
+    
+                return isPasswordValid; // パスワードを照合
+            } else {
+                console.error('ユーザーが見つかりません');
+                return false; // ユーザーが見つからない場合
             }
-            return false; // ユーザーが見つからない場合
         } catch (error) {
             console.error('Error querying DynamoDB', error);
             throw new Error('ユーザー認証に失敗しました');
         }
     }
-    
+
     async generateJwtToken(email: string): Promise<string> {
         const payload = { email };
+        const secret = this.configService.get<string>('JWT_SECRET'); // ConfigServiceを使って取得
+        if (!secret) {
+            throw new Error('JWT_SECRET is not defined');
+        }
         try {
-            return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+            return jwt.sign(payload, secret, { expiresIn: '1h' });
         } catch (error) {
             console.error('Error generating JWT token', error);
             throw new Error('JWTトークンの生成に失敗しました');
         }
     }
 }
+
+
+
+
+
+
+

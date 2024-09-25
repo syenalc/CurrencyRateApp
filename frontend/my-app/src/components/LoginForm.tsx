@@ -6,11 +6,25 @@ import { Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { login } from '../utils/api';
 import { Login } from '../utils/login.model';
+import { useNavigate } from 'react-router-dom';
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+
+interface State extends SnackbarOrigin {
+  open: boolean;
+}
 
 export default function LoginForm() {
     const [email, setEmail] = useState(''); // メールアドレスの状態
     const [password, setPassword] = useState(''); // パスワードの状態
     const [error, setError] = useState<string | null>(null); // エラーメッセージの状態
+    const navigate = useNavigate();
+
+    const [state, setState] = React.useState<State>({
+      open: false,
+      vertical: 'top',
+      horizontal: 'center',
+     });
+    const { vertical, horizontal, open } = state;
     
     const handleSubmit = async() => {
         if (!email || !password) {
@@ -29,10 +43,22 @@ export default function LoginForm() {
             setPassword('');
             setError(null); // エラーメッセージをクリア
 
+            // スナックバーを開く
+            setState({ ...state, open: true });
+      
+            // 2秒待ってから '/' へのリダイレクトを実行
+            setTimeout(() => {
+              navigate('/');  // 2秒後にリダイレクト
+            }, 2500); // 2秒 (2000ms)
+
         } catch (e) {
             console.error('エラーが発生しました', e);
             setError('ログインに失敗しました。もう一度お試しください。');
         }
+    };
+
+    const handleClose = () => {
+      setState({ ...state, open: false });
     };
 
     return (
@@ -78,13 +104,24 @@ export default function LoginForm() {
             onChange={(e) => setPassword(e.target.value)}  
           />
         </Box>
+        <Box sx={{ width: 500 }}>
+        {/* ボタンをクリックするとサインアップ処理とスナックバーの表示を行う */}
         <Button 
-          variant="contained" 
-          endIcon={<SendIcon />}
-          onClick={handleSubmit}
-        >
+            variant="contained" 
+            endIcon={<SendIcon />} 
+            onClick={handleSubmit}
+          >
             ログイン
         </Button>
+        {/* スナックバー */}
+        <Snackbar
+          anchorOrigin={{ vertical, horizontal }}
+          open={open}
+          onClose={handleClose}
+          message="ログインが完了しました。"
+          key={vertical + horizontal}
+        />
+        </Box>
         </Box>
       </>
     );
