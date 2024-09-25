@@ -37,6 +37,10 @@ interface CurrencyContextProps {
     setRate2Week: Dispatch<SetStateAction<number | null>> ;
     setRate3Week: Dispatch<SetStateAction<number | null>> ;
     setRate4Week: Dispatch<SetStateAction<number | null>> ;
+    isLoggedIn:boolean;
+    setIsLoggedIn:React.Dispatch<React.SetStateAction<boolean>>;
+    username:string;
+    setUsername:React.Dispatch<React.SetStateAction<string>>;
 }
 
 
@@ -56,6 +60,8 @@ export const CurrencyProvider:React.FC<{children:ReactNode}>=({children})=>{
     const [rate2week, setRate2Week] = useState<number | null>(null);
     const [rate3week, setRate3Week] = useState<number | null>(null);
     const [rate4week, setRate4Week] = useState<number | null>(null);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [username, setUsername]=useState('');
 
     
     return(
@@ -77,7 +83,11 @@ export const CurrencyProvider:React.FC<{children:ReactNode}>=({children})=>{
             setRate1Week,
             setRate2Week,
             setRate3Week,
-            setRate4Week
+            setRate4Week,
+            isLoggedIn,
+            setIsLoggedIn,
+            username,
+            setUsername,
         }}>
             {children}
         </CurrencyContext.Provider>

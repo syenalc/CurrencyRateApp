@@ -25,19 +25,20 @@ export class AuthController {
         return await this.authService.create(newUser);  // 非同期処理なのでawaitを付ける
     }
 
-  @Post('login')
+    @Post('login')
     async login(
         @Body('email') email: string,
         @Body('password') password: string,
-    ): Promise<{ message: string; token?: string }> { // JWTトークンを返す
-        const isLoginSuccessful = await this.authService.validateUser(email, password);
-        if (isLoginSuccessful) {
+    ): Promise<{ message: string; token?: string; name?: string }> { // nameを追加
+        const user = await this.authService.validateUser(email, password);
+        if (user) {
             console.log('ログイン成功');
-            const token = await this.authService.generateJwtToken(email); // JWTトークン生成
-            return { message: 'ログイン成功', token }; // メッセージとJWTトークンを返す
+            const token = await this.authService.generateJwtToken(user.email, user.name); // nameを追加
+            return { message: 'ログイン成功', token, name: user.name }; // nameも返す
         } else {
             console.log('ログイン失敗');
             throw new UnauthorizedException('ログインに失敗しました。'); // 401エラーレスポンス
+        }
     }
-  }
+    
 }

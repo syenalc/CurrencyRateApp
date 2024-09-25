@@ -40,10 +40,10 @@ export class AuthService {
         }
     }
 
-    async validateUser(email: string, password: string): Promise<boolean> {
+    async validateUser(email: string, password: string): Promise<Auth | null> {
         const params = {
             TableName: this.tableName,
-            IndexName: 'EmailIndex', // GSIの名前
+            IndexName: 'EmailIndex',
             KeyConditionExpression: 'email = :email',
             ExpressionAttributeValues: {
                 ':email': email,
@@ -51,35 +51,36 @@ export class AuthService {
         };
     
         try {
-            // DynamoDBから該当するメールアドレスのユーザーを取得
             const result = await this.dynamoDb.query(params).promise();
-        
-            // mailが一致したときにパスワードの照合を行う
+            
             if (result.Items && result.Items.length > 0) {
                 const user = result.Items[0] as Auth;
                 const isPasswordValid = await bcrypt.compare(password, user.password);
     
-                if (!isPasswordValid) {
+                if (isPasswordValid) {
+                    return user; // 認証されたユーザー情報を返す
+                } else {
                     console.error('パスワードが一致しません');
                 }
-    
-                return isPasswordValid; // パスワードを照合
             } else {
                 console.error('ユーザーが見つかりません');
-                return false; // ユーザーが見つからない場合
             }
+            return null; // ユーザーが見つからない場合
         } catch (error) {
             console.error('Error querying DynamoDB', error);
             throw new Error('ユーザー認証に失敗しました');
         }
     }
+    
 
-    async generateJwtToken(email: string): Promise<string> {
-        const payload = { email };
-        const secret = this.configService.get<string>('JWT_SECRET'); // ConfigServiceを使って取得
+    async generateJwtToken(email: string, name: string): Promise<string> {
+        const payload = { email, name }; 
+        const secret = this.configService.get<string>('JWT_SECRET');
+    
         if (!secret) {
             throw new Error('JWT_SECRET is not defined');
         }
+        
         try {
             return jwt.sign(payload, secret, { expiresIn: '1h' });
         } catch (error) {
@@ -87,6 +88,7 @@ export class AuthService {
             throw new Error('JWTトークンの生成に失敗しました');
         }
     }
+    
 }
 
 
