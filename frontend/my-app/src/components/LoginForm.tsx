@@ -159,6 +159,8 @@ import { Login } from '../utils/login.model';
 import { useNavigate } from 'react-router-dom';
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import { CurrencyContext } from '../context/CurrencyContext';
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@mui/material/Link';
 
 interface State extends SnackbarOrigin {
   open: boolean;
@@ -259,6 +261,18 @@ export default function LoginForm() {
                     value={password} // 入力されたパスワードを表示
                     onChange={(e) => setPassword(e.target.value)}  
                 />
+            </Box>
+            <Box>
+            <Link
+              component={RouterLink}
+              underline="hover"
+              sx={{ display: 'flex', alignItems: 'center' }}
+              color="inherit"
+              to="/signup"
+              className='toSignup'
+            >
+            サインアップがまだの方はこちら
+            </Link>
             </Box>
             <Box sx={{ width: 500 }}>
                 <Button 

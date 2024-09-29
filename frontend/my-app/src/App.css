@@ -60,11 +60,17 @@ form{
 }
 
 .css-xn6ruc>:not(style) {
-    width: 35ch !important;
+    width: 40ch !important;
+    margin:20px 0 !important;
 }
 /* 送信ボタン */
 .css-0{
     text-align: center;
+}
+/* ログインページのサインアップはこちら */
+.toSignup{
+    color:#007bff !important;
+    display: inline !important;
 }
 /* サインアップボタン */
 .css-qxh7fn{
