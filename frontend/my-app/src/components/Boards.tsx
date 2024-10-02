@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { SxProps } from '@mui/system'; 
 import { Item } from '../utils/items.model';
+import { CurrencyContext } from '../context/CurrencyContext';
 
 interface OutlinedCardProps {
   sx?: SxProps; // sx プロパティを追加
@@ -17,11 +18,39 @@ interface OutlinedCardProps {
 
 export default function OutlinedCard({ sx, item, onEdit, onDelete}: OutlinedCardProps) {
   const [expanded, setExpanded] = React.useState(false); // 状態を管理
+  // const [isOverflowed, setIsOverflowed] = React.useState(false); // コンテンツがオーバーフローしているかどうかの状態
+  // const contentRef = React.useRef<HTMLDivElement | null>(null); // コンテンツを参照するためのrefを定義
+
+
+  const currencyContextLogin = React.useContext(CurrencyContext);
+
+  // contextがundefinedでないか確認して値を取得する
+  if (!currencyContextLogin) {
+      throw new Error("CurrencyContext が提供されていません");
+  }
+  const {isLoggedIn,username} = currencyContextLogin;
 
   const handleExpandClick = () => {
     setExpanded(!expanded); // コメント欄の拡大・縮小の状態を切り替える
   };
 
+  // // コンテンツのオーバーフローをチェックする関数
+  // const checkOverflow = () => {
+  //   if (contentRef.current) {
+  //     const isOverflowing = contentRef.current.scrollHeight > contentRef.current.clientHeight;
+  //     setIsOverflowed(isOverflowing); // オーバーフローしているかを設定
+  //   }
+  // };
+
+  // // 初回レンダリング時と、依存関係が変わるたびにオーバーフローをチェック
+  // React.useEffect(() => {
+  //   checkOverflow();
+  //   // ウィンドウサイズが変更された時にもチェックするため、リサイズイベントを監視
+  //   window.addEventListener('resize', checkOverflow);
+  //   return () => window.removeEventListener('resize', checkOverflow);
+  // }, [item.description]);
+
+  //改行を反映させる関数
   const formatDescriptionWithLineBreaks = (description: string) => {
     return description.split('\n').map((line, index) => (
       <React.Fragment key={index}>
@@ -36,6 +65,7 @@ export default function OutlinedCard({ sx, item, onEdit, onDelete}: OutlinedCard
       <Box sx={{ minWidth: 275, ...sx }}>
         <Card variant="outlined">
           <CardContent
+            // ref={contentRef} // コンテンツにrefを設定
             sx={{
               height: expanded ? 'auto' : 100, // デフォルトの高さを100に制限
               overflow: 'hidden', // デフォルトではオーバーフローを隠す
@@ -60,15 +90,19 @@ export default function OutlinedCard({ sx, item, onEdit, onDelete}: OutlinedCard
           </CardContent>
           <CardActions sx={{display:"flex",justifyContent: 'space-between'}}>
             <Button size="small" onClick={handleExpandClick}>
-              {expanded ? '閉じる' : '続きを読む'}
+                <Button size="small" onClick={handleExpandClick}>
+                  {expanded ? '閉じる' : '続きを読む'}
+                </Button>
             </Button>
             <Box sx={{display:"flex" }}>
-              <Button size="small" onClick={() => onEdit(item)}>
+              {(isLoggedIn && username===item.name) 
+                && <Button size="small" onClick={() => onEdit(item)}>
                 編集  
-              </Button>
-              <Button size="small" onClick={()=> onDelete(item.id)}>
+              </Button>}
+              {(isLoggedIn && username===item.name) 
+                && <Button size="small" onClick={()=> onDelete(item.id)}>
                 削除
-              </Button>
+              </Button>}
             </Box>
           </CardActions>
         </Card>

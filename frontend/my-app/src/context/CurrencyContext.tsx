@@ -29,14 +29,20 @@ interface CurrencyContextProps {
     setFrom: Dispatch<SetStateAction<string | null>> ;
     setTo: Dispatch<SetStateAction<string | null>> ;
     setRate: Dispatch<SetStateAction<number | null>> ;
-    rate1week:number |null;
-    rate2week:number |null;
-    rate3week:number |null;
-    rate4week:number |null;
-    setRate1Week: Dispatch<SetStateAction<number | null>> ;
-    setRate2Week: Dispatch<SetStateAction<number | null>> ;
-    setRate3Week: Dispatch<SetStateAction<number | null>> ;
-    setRate4Week: Dispatch<SetStateAction<number | null>> ;
+    beforeRate: number | null;
+    setBeforeRate:React.Dispatch<React.SetStateAction<number | null>>;
+    // rate1week:number |null;
+    // rate2week:number |null;
+    // rate3week:number |null;
+    // rate4week:number |null;
+    // setRate1Week: Dispatch<SetStateAction<number | null>> ;
+    // setRate2Week: Dispatch<SetStateAction<number | null>> ;
+    // setRate3Week: Dispatch<SetStateAction<number | null>> ;
+    // setRate4Week: Dispatch<SetStateAction<number | null>> ;
+    isLoggedIn:boolean;
+    setIsLoggedIn:React.Dispatch<React.SetStateAction<boolean>>;
+    username:string;
+    setUsername:React.Dispatch<React.SetStateAction<string>>;
 }
 
 
@@ -52,10 +58,13 @@ export const CurrencyProvider:React.FC<{children:ReactNode}>=({children})=>{
     const [from, setFrom] = useState<string | null>(null);
     const [to, setTo] = useState<string | null>(null);
 
-    const [rate1week, setRate1Week] = useState<number | null>(null);
-    const [rate2week, setRate2Week] = useState<number | null>(null);
-    const [rate3week, setRate3Week] = useState<number | null>(null);
-    const [rate4week, setRate4Week] = useState<number | null>(null);
+    const [beforeRate,setBeforeRate] = useState<number | null>(null);
+    // const [rate1week, setRate1Week] = useState<number | null>(null);
+    // const [rate2week, setRate2Week] = useState<number | null>(null);
+    // const [rate3week, setRate3Week] = useState<number | null>(null);
+    // const [rate4week, setRate4Week] = useState<number | null>(null);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [username, setUsername]=useState('');
 
     
     return(
@@ -70,14 +79,12 @@ export const CurrencyProvider:React.FC<{children:ReactNode}>=({children})=>{
             setRate,
             setFrom,
             setTo,
-            rate1week,
-            rate2week,
-            rate3week,
-            rate4week,
-            setRate1Week,
-            setRate2Week,
-            setRate3Week,
-            setRate4Week
+            beforeRate,
+            setBeforeRate,
+            isLoggedIn,
+            setIsLoggedIn,
+            username,
+            setUsername,
         }}>
             {children}
         </CurrencyContext.Provider>

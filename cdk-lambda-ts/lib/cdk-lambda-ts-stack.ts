@@ -33,6 +33,36 @@ export class CurrencyRateAppStack extends cdk.Stack {
           removalPolicy: cdk.RemovalPolicy.DESTROY,
         });
 
+        // // saveRateTable
+        // const saveRateTable = new dynamodb.Table(this, 'saveRateTable', {
+        //   tableName: 'saveRateTable',
+        //   partitionKey: { name: 'name', type: dynamodb.AttributeType.STRING }, // ユーザー名をパーティションキーに
+        //   sortKey: { name: 'currencyPair', type: dynamodb.AttributeType.STRING }, // 通貨ペアをソートキーに
+        //   billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,  // リクエスト数に基づく料金プラン
+        //   removalPolicy: cdk.RemovalPolicy.DESTROY,  // デプロイ時にテーブルを削除
+        // });
+        const saveRateTable3 = new dynamodb.Table(this, 'saveRateTable3', {
+          tableName: 'saveRateTable3',  // 新しい名前を指定
+          partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
+          sortKey: { name: 'currencyPair', type: dynamodb.AttributeType.STRING }, // 通貨ペアをソートキーに
+          billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,  
+          removalPolicy: cdk.RemovalPolicy.DESTROY,  
+      });
+
+        // GSIを追加
+        saveRateTable3.addGlobalSecondaryIndex({
+        indexName: 'NameCurrencyPairIndex',
+        partitionKey: { name: 'name', type: dynamodb.AttributeType.STRING },  // nameをパーティションキーに
+        sortKey: { name: 'currencyPair', type: dynamodb.AttributeType.STRING }, // currencyPairをソートキーに
+        });
+
+        // GSIの追加
+        authTable.addGlobalSecondaryIndex({
+          indexName: 'EmailIndex', // インデックス名
+          partitionKey: { name: 'email', type: dynamodb.AttributeType.STRING }, // emailをインデックスにする
+          projectionType: dynamodb.ProjectionType.ALL, // 全ての属性を返す
+        });
+
         // Nestjs Lambda関数の定義
         const handler = new lambda.Function(this, 'NestJsLambda', {
           runtime: lambda.Runtime.NODEJS_20_X,
@@ -82,13 +112,39 @@ export class CurrencyRateAppStack extends cdk.Stack {
         item.addMethod('PUT', new apigateway.LambdaIntegration(handler));
         item.addMethod('DELETE', new apigateway.LambdaIntegration(handler));
 
-        // /auth リソースの定義 (ユーザー認証用)
+        // /auth リソースの定義 (ユーザー登録用)
         const auth = api.root.addResource('auth');
         auth.addMethod('POST', new apigateway.LambdaIntegration(handler));
         
+        // /auth/login リソースの定義 (ログイン用)
+        const login = auth.addResource('login');
+        login.addMethod('POST', new apigateway.LambdaIntegration(handler));
         // // 必要なアクセス権を付与
+        
+        const rates = api.root.addResource('rate');
+
+
+        // GET /rates/{name}
+        const nameResource = rates.addResource('{name}');
+        nameResource.addMethod('GET', new apigateway.LambdaIntegration(handler));
+
+        // GET /rates/{name}/details
+        const detailsResource = nameResource.addResource('details');
+        detailsResource.addMethod('GET', new apigateway.LambdaIntegration(handler));
+
+        // GET /rates/{name}/details/{currencyPair}
+        const currencyPairResource = detailsResource.addResource('{currencyPair}');
+        currencyPairResource.addMethod('GET', new apigateway.LambdaIntegration(handler));
+
+
+        
+
+        // POST /rate リソースの追加
+        rates.addMethod('POST', new apigateway.LambdaIntegration(handler));
+
         table.grantReadWriteData(handler);
         authTable.grantReadWriteData(handler);
+        saveRateTable3.grantReadWriteData(handler);
         bucket.grantReadWrite(handler);
     }
 }
