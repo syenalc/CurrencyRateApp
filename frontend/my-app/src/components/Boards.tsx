@@ -80,10 +80,6 @@ export default function OutlinedCard({ sx, item, onEdit, onDelete}: OutlinedCard
               </Typography>
             </Box>
             <br />
-            {/* <Typography variant="body2">
-              
-              <br />
-            </Typography> */}
             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                 {formatDescriptionWithLineBreaks(item.description)}
             </Typography>

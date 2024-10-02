@@ -11,11 +11,10 @@ import FormDialog from './CreateBoards';
 import BasicMenu from './Order';
 import UpdateDialog from './UpdateBoards';
 import AlertDialog from './DeleteBoards';
-import { findAll, saveRate } from '../utils/api';
+import { findAll } from '../utils/api';
 import OutlinedCard from './Boards';
 import { Item } from '../utils/items.model';
-import { Rate } from '../utils/rate.model';
-import { v4 as uuidv4 } from 'uuid'; 
+
 
 
 interface CurrencyData {
@@ -36,7 +35,6 @@ interface CurrencyData {
 // }
 // {parsedTrigger}:RateButtonProps
 export default function RateButton() {
-    const [error, setError] = useState<string | null>(null); // エラーメッセージの状態
     const navigate = useNavigate();
     const currencyContext2 = useContext(CurrencyContext);
     
@@ -102,34 +100,6 @@ export default function RateButton() {
             navigate('/login'); 
         }
     }
-    // const saveRateFunction = async () => { 
-    //     try {
-    //         // from と to が null でないことを確認
-    //         if (from == null || to == null) {
-    //             setError('通貨が選択されていません。');
-    //             return; // 処理を中断
-    //         }
-    
-    //         const latestRate: Rate = {
-    //             id: uuidv4(),  // UUIDを生成
-    //             name: username,
-    //             currencyPair: `${from}${to}`, // from と to を文字列として結合
-    //             exchangeRate: rate,
-    //             timestamp: new Date().toISOString(),
-    //         };
-    
-    //         if (isLoggedIn) {
-    //             await saveRate(latestRate);
-    //             console.log("為替レートの保存に成功")
-    //             navigate('/report');
-    //         } else {
-    //             navigate('/login'); 
-    //         }
-    //     } catch (e) {
-    //         console.error('エラーが発生しました', e);
-    //         setError('最新為替レートの保存に失敗しました。もう一度お試しください。');
-    //     }
-    // };
     
 
     // const dataStorage=()=>{
@@ -271,7 +241,7 @@ export default function RateButton() {
                 variant="h2"
                 fontWeight={"fontWeightRegular"}
             >
-            為替速報メモ
+            為替速報掲示板
             </Typography>
             <FormDialog 
                 onNewItemCreated={fetchItems} 

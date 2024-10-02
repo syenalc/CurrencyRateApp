@@ -87,33 +87,6 @@ const Report=()=>{
         fetchDataAndSaveRate();
     }, []);
     
-    // const fetchItems = async () => {
-    //     try {
-    //         const data = await getPastRate(username, currencyPair);
-    //         console.log('APIから取得したデータ:', data);
-    
-    //         if (data) {
-    //             setBeforeRate(data.exchangeRate);
-    //             if (data.timestamp && typeof data.timestamp === 'string') {
-    //                 setLastVisit(data.timestamp.split('T')[0]);
-    //             } else {
-    //                 console.warn('タイムスタンプが無効:', data.timestamp);
-    //                 setLastVisit("なし");
-    //             }
-    //         } else {
-    //             console.warn('データが存在しません');
-    //             setLastVisit("なし");
-    //         }
-    //     } catch (error) {
-    //         console.error('APIリクエストに失敗しました', error);
-    //         setLastVisit("取得できませんでした");
-    //     }
-    // };
-    
-    
-    // useEffect(() => {
-    //     fetchItems();
-    // }, []);
 
     const timeData:string[] = [`前回訪問時(${lastVisit})`,"今日"]
     const valueFormatter = (value: any) => {
