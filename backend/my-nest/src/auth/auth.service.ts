@@ -23,16 +23,8 @@ export class AuthService {
             console.log('ハッシュ化前のパスワード:', auth.password);
             auth.password = await bcrypt.hash(auth.password, saltRounds);
             console.log('ハッシュ化後のパスワード:', auth.password);
-<<<<<<< HEAD
-        }else{
-            console.log("aaa");
         }
 
-        console.log('AuthService - Saving user to DynamoDB', auth);
-=======
-        }
-
->>>>>>> login
         const params = {
             TableName: this.tableName,
             Item: auth,
@@ -48,15 +40,6 @@ export class AuthService {
         }
     }
 
-<<<<<<< HEAD
-    async validateUser(email: string, password: string): Promise<boolean> {
-        const params = {
-          TableName: this.tableName,
-          KeyConditionExpression: 'email = :email',
-          ExpressionAttributeValues: {
-            ':email': email,
-          },
-=======
     async validateUser(email: string, password: string): Promise<Auth | null> {
         const params = {
             TableName: this.tableName,
@@ -65,19 +48,10 @@ export class AuthService {
             ExpressionAttributeValues: {
                 ':email': email,
             },
->>>>>>> login
         };
     
         try {
             const result = await this.dynamoDb.query(params).promise();
-<<<<<<< HEAD
-        
-            if (result.Items && result.Items.length > 0) {
-                const user = result.Items[0] as Auth;
-                return await bcrypt.compare(password, user.password); // パスワードを照合
-            }
-            return false; // ユーザーが見つからない場合
-=======
             
             if (result.Items && result.Items.length > 0) {
                 const user = result.Items[0] as Auth;
@@ -92,21 +66,10 @@ export class AuthService {
                 console.error('ユーザーが見つかりません');
             }
             return null; // ユーザーが見つからない場合
->>>>>>> login
         } catch (error) {
             console.error('Error querying DynamoDB', error);
             throw new Error('ユーザー認証に失敗しました');
         }
-<<<<<<< HEAD
-      }
-    
-      async generateJwtToken(email: string): Promise<string> {
-        // JWTトークンを生成するロジック。ここでは仮にシンプルなシークレットキーを使っていますが、
-        // 実際の環境では、process.env.JWT_SECRETなどの環境変数を使用します。
-        const payload = { email };
-        try {
-            return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
-=======
     }
     
 
@@ -120,17 +83,12 @@ export class AuthService {
         
         try {
             return jwt.sign(payload, secret, { expiresIn: '1h' });
->>>>>>> login
         } catch (error) {
             console.error('Error generating JWT token', error);
             throw new Error('JWTトークンの生成に失敗しました');
         }
-<<<<<<< HEAD
-      }
-=======
     }
     
->>>>>>> login
 }
 
 
