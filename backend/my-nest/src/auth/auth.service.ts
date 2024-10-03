@@ -20,9 +20,9 @@ export class AuthService {
     async create(auth: Auth): Promise<Auth> {
         if (auth.password) {
             const saltRounds = 10;
-            console.log('ハッシュ化前のパスワード:', auth.password);
+            // console.log('ハッシュ化前のパスワード:', auth.password);
             auth.password = await bcrypt.hash(auth.password, saltRounds);
-            console.log('ハッシュ化後のパスワード:', auth.password);
+            // console.log('ハッシュ化後のパスワード:', auth.password);
         }
 
         const params = {

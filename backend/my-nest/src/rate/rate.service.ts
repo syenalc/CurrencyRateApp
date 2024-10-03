@@ -15,7 +15,7 @@ export class RateService {
       Item: {
         id: rate.id,
         name: rate.name,  
-        currencyPair: rate.currencyPair,  // ソートキー: 通貨ペア + タイムスタンプ
+        currencyPair: rate.currencyPair,  
         exchangeRate: rate.exchangeRate,
         timestamp: rate.timestamp,
       },
